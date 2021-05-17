@@ -39,8 +39,13 @@ public class Topic{
             inverseJoinColumns = @JoinColumn(name = "hastagId"))
     private Set<Hastag> hastags = new HashSet<>();
 
+    @ManyToOne
+    private User user;
 
-    public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Category category) {
+    public Topic() {
+
+    }
+    public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Category category, Set<Hastag> hastags, User user) {
         this.topicId = topicId;
         this.title = title;
         this.content = content;
@@ -49,11 +54,11 @@ public class Topic{
         this.topicDislike = topicDislike;
         this.topicStatus = topicStatus;
         this.category = category;
+        this.hastags = hastags;
+        this.user = user;
     }
 
-    public Topic() {
 
-    }
 
     public Long getTopicId() {
         return topicId;
@@ -133,5 +138,13 @@ public class Topic{
 
     public void setHastags(Set<Hastag> hastags) {
         this.hastags = hastags;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
