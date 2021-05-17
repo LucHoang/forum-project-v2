@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,7 +22,7 @@
 
     <!-- Vendor -->
     <link rel="stylesheet" href="/assert/vendor/bootstrap/v3/bootstrap.min.css">
-    <link rel="stylesheet" href="assert/vendor/bootstrap/v4/bootstrap-grid.css">
+    <link rel="stylesheet" href="/assert/vendor/bootstrap/v4/bootstrap-grid.css">
     <!-- Custom -->
     <link rel="stylesheet" href="/assert/css/style.css">
 
@@ -37,19 +38,11 @@
         <div class="container">
             <div class="header__logo">
                 <h1>
-                    <img src="assert/fonts/icons/main/Logo_Forum.svg" alt="logo">
+                    <img src="/assert/fonts/icons/main/Logo_Forum.svg" alt="logo">
                 </h1>
-                <div class="header__logo-btn" data-dropdown-btn="logo">
-                    Unity<i class="icon-Arrow_Below"></i>
+                <div class="header__logo-btn" >
+                    <a th:href="@{/}">Unity</a><i class="icon-Arrow_Below"></i>
                 </div>
-                <nav class="dropdown dropdown--design-01" data-dropdown-list="logo">
-                    <ul class="dropdown__catalog">
-                        <li><a href="index.html">Home Page</a></li>
-                        <li><a href="single-topic.html">Single Topic Page</a></li>
-                        <li><a href="simple-signup.html">Sign up Page</a></li>
-                        <li><a href="create-topic.html">Create Topic Page</a></li>
-                    </ul>
-                </nav>
             </div>
             <div class="header__search">
                 <form action="#">
@@ -216,7 +209,7 @@
             </div>
         </div>
         <div class="header__offset-btn">
-            <a href="create-topic.html"><img src="assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
+            <a href="create-topic.html"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
         </div>
     </div>
 </header>
@@ -226,7 +219,7 @@
         <div class="container">
             <div class="footer__logo">
                 <div>
-                    <img src="assert/fonts/icons/main/Logo_Forum.svg" alt="logo">Unity
+                    <img src="/assert/fonts/icons/main/Logo_Forum.svg" alt="logo">Unity
                 </div>
             </div>
             <div class="footer__nav">

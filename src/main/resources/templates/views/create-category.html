@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-US">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/views/layout :: head">
+</head>
+
+<body>
+<!-- HEADER -->
+<header th:replace="/views/layout :: header">
+</header>
+
+
+<!-- MAIN -->
+<main>
+    <div class="container">
+        <div class="create">
+            <div class="create__head">
+                <div class="create__title"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New topic">Create Category</div>
+            </div>
+            <form th:action="@{/create-or-update-cate}" method="post" th:object="${category}">
+                <input type="hidden" th:field="*{cateId}">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="create__section">
+                            <label class="create__label" for="CategoryName">Category Name</label>
+                            <input type="text" class="form-control" id="CategoryName" placeholder="Add here" th:field="*{cateName}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="create__section">
+                            <label class="create__label" for="CategoryColor">Select color of category</label>
+                            <input type="color" class="form-control" id="CategoryColor" placeholder="Add here" th:field="*{color}">
+                        </div>
+                    </div>
+                </div>
+                <div class="create__section">
+                    <p th:text="${message}" style="color: green"></p>
+                    <label class="create__label" for="tags">Add Tags</label>
+                    <input type="text" class="form-control" id="tags" placeholder="e.g. nature, science">
+                </div>
+
+                <div class="create__footer">
+                    <a th:href="@{/}" class="create__btn-cansel btn">Cancel</a>
+                    <button type="submit" class="create__btn-create btn btn--type-02">Create Thread</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer th:replace="/views/layout :: footer">
+
+</footer>
+
+</body>
+</html>
