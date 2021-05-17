@@ -1,7 +1,7 @@
 package com.casestudy.configuration;
 
 
-import com.casestudy.service.AppUserService;
+import com.casestudy.service.user.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

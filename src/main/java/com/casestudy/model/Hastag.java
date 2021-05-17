@@ -15,12 +15,15 @@ public class Hastag {
     @Size(max = 50)
     private String hastagName;
 
+    private String color;
+
     public Hastag() {
     }
 
-    public Hastag(Long hastagId, @NotBlank @Size(max = 50) String hastagName) {
+    public Hastag(Long hastagId, @NotBlank @Size(max = 50) String hastagName, String color) {
         this.hastagId = hastagId;
         this.hastagName = hastagName;
+        this.color = color;
     }
 
     public Long getHastagId() {
@@ -37,5 +40,13 @@ public class Hastag {
 
     public void setHastagName(String name) {
         this.hastagName = name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
