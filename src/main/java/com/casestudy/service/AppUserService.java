@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AppUserService implements UserDetailsService {
+public class AppUserService implements UserDetailsService, IUserService {
     @Autowired
     IUserRepository iUserRepository;
 
@@ -23,5 +23,25 @@ public class AppUserService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return UserPrinciple.build(userOptional.get());
+    }
+
+    @Override
+    public Iterable<User> findAll() {
+        return null;
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void save(User user) {
+        iUserRepository.save(user);
+    }
+
+    @Override
+    public void remove(Long id) {
+
     }
 }
