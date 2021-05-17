@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,6 +42,7 @@ public class Topic{
 
     @ManyToOne
     private User user;
+
 
     public Topic() {
 
@@ -147,4 +149,5 @@ public class Topic{
     public void setUser(User user) {
         this.user = user;
     }
+
 }
