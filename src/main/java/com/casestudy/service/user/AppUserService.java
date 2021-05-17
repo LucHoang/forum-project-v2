@@ -1,4 +1,4 @@
-package com.casestudy.service;
+package com.casestudy.service.user;
 
 import com.casestudy.model.User;
 import com.casestudy.model.UserPrinciple;
@@ -33,6 +33,26 @@ public class AppUserService implements UserDetailsService, IUserService {
     @Override
     public Optional<User> findById(Long id) {
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return iUserRepository.findByUsername(username);
+    }
+
+//    @Override
+//    public Boolean existsByEmail(String email) {
+//        return iUserRepository.existsByEmail(email);
+//    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return iUserRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Iterable<User> findUsersByNameContaining(String user_name) {
+        return iUserRepository.findUsersByFullNameContaining(user_name);
     }
 
     @Override

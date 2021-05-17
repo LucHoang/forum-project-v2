@@ -28,9 +28,8 @@ public class User {
     @Column(nullable = false)
     private String fullName;
 
-    @NotBlank
     @Column(nullable = true)
-    private String avatar;
+    private String avatar = "test";
 
     @Column(nullable = true)
     private String level = "New member";
@@ -46,11 +45,10 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String fullName, String avatar) {
+    public User(String username, String password, String fullName) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
-        this.avatar = avatar;
     }
 
     public User(Long id, String username, String password, String fullName, String avatar, String level, Set<Role> roles, LocalDateTime dateCreate) {
