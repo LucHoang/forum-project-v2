@@ -36,7 +36,7 @@ public class SecurityController {
     @GetMapping("/admin")
     public String adminPage(ModelMap modelMap) {
         modelMap.addAttribute("user", getPrincipal());
-        return "redirect:cities";
+        return "/views/index";
     }
 
     @GetMapping("/accessDenied")
