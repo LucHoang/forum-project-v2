@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html lang="en">
 <head th:fragment="head">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -8,7 +9,7 @@
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Responsive HTML5 Template">
     <meta name="author" content="author.com">
-    <title>Responsive HTML5 Template</title>
+    <title>Forum Project</title>
 
     <!-- STYLESHEET -->
     <!-- fonts -->
@@ -36,7 +37,7 @@
         <div class="container">
             <div class="header__logo">
                 <h1>
-                    <img src="fonts/icons/main/Logo_Forum.svg" alt="logo">
+                    <img src="assert/fonts/icons/main/Logo_Forum.svg" alt="logo">
                 </h1>
                 <div class="header__logo-btn" data-dropdown-btn="logo">
                     Unity<i class="icon-Arrow_Below"></i>
@@ -167,9 +168,28 @@
                     </div>
                 </div>
             </div>
-            <div class="header__user">
+
+            <div class="header__user" sec:authorize="isAnonymous()">
+
+                <div class="header__user-btn">
+<!--                     data-dropdown-btn="user">-->
+                    <a th:href="@{/admin}">
+<!--                    <img src="assert/fonts/icons/avatars/A.svg" alt="avatar">-->
+                    Sign In
+<!--                        <i class="icon-Arrow_Below"></i>-->
+                    </a>
+                    &nbsp|&nbsp
+                    <a th:href="@{/views/simple-signup.html}">
+                        <!--                    <img src="assert/fonts/icons/avatars/A.svg" alt="avatar">-->
+                        Sign Up
+                        <!--                        <i class="icon-Arrow_Below"></i>-->
+                    </a>
+                </div>
+            </div>
+
+            <div class="header__user" sec:authorize="isAuthenticated()">
                 <div class="header__user-btn" data-dropdown-btn="user">
-                    <img src="fonts/icons/avatars/A.svg" alt="avatar">
+                    <img src="assert/fonts/icons/avatars/A.svg" alt="avatar">
                     azyrusmax<i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="user">
@@ -189,14 +209,14 @@
                             <li><a href="#">Notifications</a></li>
                             <li><a href="#">Topics</a></li>
                             <li><a href="#">Likes</a></li>
-                            <li><a href="#">Solved</a></li>
+                            <li><a th:href="@{/logout}">Logout</a></li>
                         </ul>
                     </div>
                 </nav>
             </div>
         </div>
         <div class="header__offset-btn">
-            <a href="create-topic.html"><img src="fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
+            <a href="create-topic.html"><img src="assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
         </div>
     </div>
 </header>
@@ -206,7 +226,7 @@
         <div class="container">
             <div class="footer__logo">
                 <div>
-                    <img src="fonts/icons/main/Logo_Forum.svg" alt="logo">Unity
+                    <img src="assert/fonts/icons/main/Logo_Forum.svg" alt="logo">Unity
                 </div>
             </div>
             <div class="footer__nav">
