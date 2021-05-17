@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +31,8 @@ public class Topic{
 
     private Long topicStatus;
 
+    private Long topicView;
+
     @ManyToOne
     private Category category;
 
@@ -45,7 +48,8 @@ public class Topic{
     public Topic() {
 
     }
-    public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Category category, Set<Hastag> hastags, User user) {
+
+    public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Long topicView, Category category, Set<Hastag> hastags, User user) {
         this.topicId = topicId;
         this.title = title;
         this.content = content;
@@ -53,12 +57,11 @@ public class Topic{
         this.topicLike = topicLike;
         this.topicDislike = topicDislike;
         this.topicStatus = topicStatus;
+        this.topicView = topicView;
         this.category = category;
         this.hastags = hastags;
         this.user = user;
     }
-
-
 
     public Long getTopicId() {
         return topicId;
@@ -146,5 +149,23 @@ public class Topic{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getTopicView() {
+        return topicView;
+    }
+
+    public void setTopicView(Long topicView) {
+        this.topicView = topicView;
+    }
+
+    public String getSimpleDate(){
+        try {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            String formatDateTime = this.topicDate.format(format);
+            return formatDateTime;
+        }catch (Exception e){
+            return null;
+        }
     }
 }
