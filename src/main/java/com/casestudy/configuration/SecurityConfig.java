@@ -19,10 +19,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("user").password("{noop}123456").roles("USER");
-//        auth.inMemoryAuthentication().withUser("admin").password("{noop}123456").roles("ADMIN");
-//        auth.inMemoryAuthentication().withUser("dba").password("{noop}123456").roles("ADMIN","DBA");
-
         auth.userDetailsService((UserDetailsService) appUserService).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
@@ -31,8 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/home").access("hasRole('MEMBER')")
-                .antMatchers("/admin/**","/create-city/**","/edit-city/**","/delete-city/**",
-                        "/delete-nation/**","/edit-nation/**","/create-nation/**","/nations/**").access("hasRole('ADMIN')")
+                .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/dba/**").access("hasRole('ADMIN') and hasRole('DBA')")
                 .and().formLogin().successHandler(new CustomSuccessHandler())
                 .usernameParameter("ssoId").passwordParameter("password")
