@@ -117,15 +117,15 @@
                                     <div class="topic__footer-likes">
                                         <div>
                                             <a href="#"><i class="icon-Upvote"></i></a>
-                                            <span>201</span>
+                                            <span></span>
                                         </div>
                                         <div>
                                             <a href="#"><i class="icon-Downvote"></i></a>
-                                            <span>08</span>
+                                            <span th:text="${topic.topicDislike}"></span>
                                         </div>
                                         <div>
                                             <a href="#"><i class="icon-Favorite_Topic"></i></a>
-                                            <span>39</span>
+                                            <span th:text="${topic.topicLike}"></span>
                                         </div>
                                     </div>
                                     <div class="topic__footer-share">

@@ -1,7 +1,9 @@
 package com.casestudy.controller;
 
+import com.casestudy.model.Reply;
 import com.casestudy.model.Topic;
-import com.casestudy.service.ITopicService;
+import com.casestudy.service.reply.IReplyService;
+import com.casestudy.service.topic.ITopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public class SecurityController {
     @Autowired
     private ITopicService topicService;
+    @Autowired
+    private IReplyService replyService;
     private String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -62,9 +66,11 @@ public class SecurityController {
     @GetMapping("/detail/{id}")
     public ModelAndView showDetailTopic(@PathVariable Long id){
         Optional<Topic> topic = topicService.findById(id);
+        Iterable<Reply> reply = replyService.findAllByTopic(topic.get());
         if (topic.isPresent()) {
             ModelAndView modelAndView = new ModelAndView("/views/single-topic");
             modelAndView.addObject("topic", topic.get());
+            modelAndView.addObject("replies", reply);
             return modelAndView;
 
         } else {
