@@ -32,7 +32,7 @@ public class TopicService implements ITopicService {
 
     @Override
     public Iterable<Topic> findAll() {
-        return null;
+        return topicRepository.findAll();
     }
 
     @Override
