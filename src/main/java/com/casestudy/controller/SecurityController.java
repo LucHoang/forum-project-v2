@@ -30,12 +30,6 @@ public class SecurityController {
         return userName;
     }
 
-    @GetMapping(value = {"/"})
-    public String listCity(Model model) {
-        model.addAttribute("user", getPrincipal());
-        return "views/index";
-    }
-
     @GetMapping(value = {"/home"})
     public String Homepage(Model model) {
         model.addAttribute("user", getPrincipal());
