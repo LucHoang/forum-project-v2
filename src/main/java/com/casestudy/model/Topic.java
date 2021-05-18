@@ -33,7 +33,8 @@ public class Topic{
     @ManyToOne
     private Category category;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "topics_hastag" ,
             joinColumns = @JoinColumn(name = "topicId"),
             inverseJoinColumns = @JoinColumn(name = "hastagId"))
@@ -58,7 +59,12 @@ public class Topic{
         this.user = user;
     }
 
-
+    public Topic(@NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, Category category, Set<Hastag> hastags) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.hastags = hastags;
+    }
 
     public Long getTopicId() {
         return topicId;

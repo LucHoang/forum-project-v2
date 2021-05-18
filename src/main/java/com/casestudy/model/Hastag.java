@@ -3,6 +3,8 @@ package com.casestudy.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "hastag")
@@ -15,11 +17,21 @@ public class Hastag {
     @Size(max = 50)
     private String hastagName;
 
-    public Hastag() {
-    }
+    @ManyToMany(mappedBy = "hastags")
+    private Set<Topic> topics = new HashSet<>();
 
+    public Hastag() {}
     public Hastag(Long hastagId, @NotBlank @Size(max = 50) String hastagName) {
         this.hastagId = hastagId;
+        this.hastagName = hastagName;
+    }
+
+    public Hastag(@NotBlank @Size(max = 50) String hastagName, Set<Topic> topics) {
+        this.hastagName = hastagName;
+        this.topics = topics;
+    }
+
+    public Hastag(@NotBlank @Size(max = 50) String hastagName) {
         this.hastagName = hastagName;
     }
 

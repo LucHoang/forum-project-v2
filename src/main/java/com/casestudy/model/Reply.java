@@ -14,7 +14,7 @@ public class Reply{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long replyId;
 
-    @Size(max = 50)
+    @Size(max = 1000)
     private String content;
 
     private Long topicLike;
@@ -32,7 +32,7 @@ public class Reply{
     public Reply() {
     }
 
-    public Reply(Long replyId, @Size(max = 50) String content, Long topicLike, Long topicDislike, LocalDateTime topicDate, User user, Topic topic) {
+    public Reply(Long replyId, @Size(max = 1000) String content, Long topicLike, Long topicDislike, LocalDateTime topicDate, User user, Topic topic) {
         this.replyId = replyId;
         this.content = content;
         this.topicLike = topicLike;
