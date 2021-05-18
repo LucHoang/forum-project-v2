@@ -143,11 +143,11 @@
                         </a>
                         <a href="#">
                             <i class="icon-Badge"></i>
-                            <p>Earned Badge . 19 feb, 17<span><img src="fonts/icons/badges/Lets_talk.svg" alt="Lets Talk">Lets Talk</span></p>
+                            <p>Earned Badge . 19 feb, 17<span><img src="/fonts/icons/badges/Lets_talk.svg" alt="Lets Talk">Lets Talk</span></p>
                         </a>
                         <a href="#">
                             <i class="icon-Badge"></i>
-                            <p>Earned Badge . 21 feb, 17<span><img src="fonts/icons/badges/Intermediate.svg" alt="Intermediate">Intermediate</span></p>
+                            <p>Earned Badge . 21 feb, 17<span><img src="/fonts/icons/badges/Intermediate.svg" alt="Intermediate">Intermediate</span></p>
                         </a>
                         <a href="#">
                             <i class="icon-Share_Topic"></i>
@@ -166,13 +166,13 @@
 
                 <div class="header__user-btn">
 <!--                     data-dropdown-btn="user">-->
-                    <a th:href="@{/admin}">
+                    <a th:href="@{/home}">
 <!--                    <img src="assert/fonts/icons/avatars/A.svg" alt="avatar">-->
                     Sign In
 <!--                        <i class="icon-Arrow_Below"></i>-->
                     </a>
                     &nbsp|&nbsp
-                    <a th:href="@{/views/simple-signup.html}">
+                    <a th:href="@{/create-user}">
                         <!--                    <img src="assert/fonts/icons/avatars/A.svg" alt="avatar">-->
                         Sign Up
                         <!--                        <i class="icon-Arrow_Below"></i>-->
@@ -182,8 +182,12 @@
 
             <div class="header__user" sec:authorize="isAuthenticated()">
                 <div class="header__user-btn" data-dropdown-btn="user">
-                    <img src="assert/fonts/icons/avatars/A.svg" alt="avatar">
-                    azyrusmax<i class="icon-Arrow_Below"></i>
+                    <img src="/assert/fonts/icons/avatars/A.svg" alt="avatar">
+<!--                    <div th:if="${user}">-->
+<!--                        <span th:text="${user.fullName}"></span>-->
+<!--                    </div>-->
+                    UserName
+                    <i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="user">
                     <div>
