@@ -2,8 +2,10 @@ package com.casestudy.controller;
 
 import com.casestudy.model.Reply;
 import com.casestudy.model.Topic;
+import com.casestudy.model.User;
 import com.casestudy.service.reply.IReplyService;
 import com.casestudy.service.topic.ITopicService;
+import com.casestudy.service.user.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -22,6 +25,9 @@ public class SecurityController {
     private ITopicService topicService;
     @Autowired
     private IReplyService replyService;
+    @Autowired
+    private AppUserService userService;
+
     private String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -35,9 +41,13 @@ public class SecurityController {
     }
 
     @GetMapping(value = {"/home"})
-    public String Homepage(Model model) {
-        model.addAttribute("user", getPrincipal());
-        return "/views/index";
+    public ModelAndView Homepage(RedirectAttributes redirectAttributes) {
+//        model.addAttribute("user", getPrincipal());
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        redirectAttributes.addFlashAttribute("user",getPrincipal());
+        redirectAttributes.addFlashAttribute("userCurrent",userCurrent.get());
+//        return "/views/index";
+        return new ModelAndView("redirect:/");
     }
 
     @GetMapping("/admin")

@@ -53,7 +53,7 @@ public class UserController {
 
         if (userService.existsByUsername(userRequest.getUsername())) {
             ModelAndView modelAndView = new ModelAndView("/views/simple-signup");
-            modelAndView.addObject("success", "Username exist!!!");
+            modelAndView.addObject("error", "Username exist!!!");
             return modelAndView;
         }
 
@@ -66,7 +66,12 @@ public class UserController {
         }
 
         // Creating user's account
-        User user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), fileName);
+        User user;
+        if (fileName.equals("")) {
+            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName());
+        } else {
+            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), fileName);
+        }
 
 //        Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
