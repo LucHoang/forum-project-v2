@@ -37,7 +37,7 @@ public class Topic{
     private Category category;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "topics_hastag" ,
+    @JoinTable(name = "topics_hastag",
             joinColumns = @JoinColumn(name = "topicId"),
             inverseJoinColumns = @JoinColumn(name = "hastagId"))
     private Set<Hastag> hastags = new HashSet<>();
@@ -168,4 +168,5 @@ public class Topic{
             return null;
         }
     }
+
 }

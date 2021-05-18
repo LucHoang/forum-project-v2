@@ -1,6 +1,7 @@
 package com.casestudy.service.topic;
 
 import com.casestudy.model.Category;
+import com.casestudy.model.Hastag;
 import com.casestudy.model.Topic;
 import com.casestudy.repository.ITopicRepository;
 import com.casestudy.service.topic.ITopicService;
@@ -9,11 +10,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TopicService implements ITopicService {
-@Autowired
+    @Autowired
     ITopicRepository topicRepository;
     @Override
     public Iterable<Topic> findAllByCategory(Category category) {
@@ -49,4 +52,5 @@ public class TopicService implements ITopicService {
     public void remove(Long id) {
         topicRepository.deleteById(id);
     }
+
 }
