@@ -173,7 +173,7 @@
 
                 <div class="header__user-btn">
 <!--                     data-dropdown-btn="user">-->
-                    <a th:href="@{/admin}">
+                    <a th:href="@{/home}">
 <!--                    <img src="assert/fonts/icons/avatars/A.svg" alt="avatar">-->
                     Sign In
 <!--                        <i class="icon-Arrow_Below"></i>-->
@@ -190,7 +190,11 @@
             <div class="header__user" sec:authorize="isAuthenticated()">
                 <div class="header__user-btn" data-dropdown-btn="user">
                     <img src="/assert/fonts/icons/avatars/A.svg" alt="avatar">
-                    azyrusmax<i class="icon-Arrow_Below"></i>
+<!--                    <div th:if="${user}">-->
+<!--                        <span th:text="${user.fullName}"></span>-->
+<!--                    </div>-->
+                    UserName
+                    <i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="user">
                     <div>

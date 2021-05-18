@@ -12,7 +12,7 @@
         <div class="container">
             <div class="signup__header-content">
                 <p><a href="#">Already have an account?</a></p>
-                <a th:href="@{/admin}" class="btn">Sign In</a>
+                <a th:href="@{/home}" class="btn">Sign In</a>
             </div>
         </div>
     </header>
@@ -33,13 +33,13 @@
                 </div>
 
                 <form class="form-horizontal" th:action="@{/create-user}" th:object="${user}"
-                      method="POST">
+                      method="POST" enctype="multipart/form-data">
 
                 <div class="signup__form">
                     <div class="notify" style="text-align: center; color: #4CAF50">
                         <div th:if="${success}">
                             <span th:text="${success}"></span>
-                            <a th:href="@{/admin}" class="btn">Sign in now?</a>
+                            <a th:href="@{/home}" class="btn">Sign in now?</a>
                         </div>
                     </div>
 
@@ -73,6 +73,14 @@
                             <input name="password" type="password" class="form-control" id="password" value="*********" th:field="*{password}">
                             <span style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</span>
 <!--                            <span class="message-input__strong">strong</span>-->
+                        </div>
+                    </div>
+
+                    <!-- File Button -->
+                    <div class="signup__section">
+                        <label class="signup__label" for="username">Avatar</label>
+                        <div class="message-input">
+                            <input id="email" name="avatar" class="form-control" type="file" th:field="*{avatar}">
                         </div>
                     </div>
 <!--                    <div class="signup__checkbox">-->

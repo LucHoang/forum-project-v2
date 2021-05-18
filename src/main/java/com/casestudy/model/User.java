@@ -28,8 +28,8 @@ public class User {
     @Column(nullable = false)
     private String fullName;
 
-    @Column(nullable = true)
-    private String avatar = "test";
+//    @Column(nullable = true)
+    private String avatar;
 
     @Column(nullable = true)
     private String level = "New member";
@@ -60,6 +60,13 @@ public class User {
         this.level = level;
         this.roles = roles;
         this.dateCreate = dateCreate;
+    }
+
+    public User(String username, String password, String fullName, String fileName) {
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.avatar = fileName;
     }
 
     public String getAvatar() {
