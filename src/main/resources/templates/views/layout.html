@@ -189,11 +189,13 @@
 
             <div class="header__user" sec:authorize="isAuthenticated()">
                 <div class="header__user-btn" data-dropdown-btn="user">
-                    <img src="/assert/fonts/icons/avatars/A.svg" alt="avatar">
+<!--                    <img src="/assert/fonts/icons/avatars/A.svg" alt="avatar">-->
+                    <img th:src="@{'/assert/img/' + ${userCurrent.avatar}}" alt="avatar">
+<!--                    <img src="C:Tai-Ve/ao-thun-it-not-bug-it-feature.png" alt="avatar">-->
 <!--                    <div th:if="${user}">-->
-<!--                        <span th:text="${user.fullName}"></span>-->
+                        <span th:text="${user}"></span>
 <!--                    </div>-->
-                    UserName
+<!--                    UserName-->
                     <i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="user">
