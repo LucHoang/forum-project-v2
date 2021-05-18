@@ -4,6 +4,8 @@ import com.casestudy.model.User;
 import com.casestudy.model.UserPrinciple;
 import com.casestudy.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,7 +34,7 @@ public class AppUserService implements UserDetailsService, IUserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return iUserRepository.findById(id);
     }
 
     @Override
@@ -63,5 +65,14 @@ public class AppUserService implements UserDetailsService, IUserService {
     @Override
     public void remove(Long id) {
 
+    }
+
+    @Override
+    public Page<User> findAllByUsernameContaining(String name, Pageable pageable) {
+        return iUserRepository.findAllByUsernameContaining(name, pageable);
+    }
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return iUserRepository.findAll(pageable);
     }
 }

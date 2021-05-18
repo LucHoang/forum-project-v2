@@ -189,11 +189,9 @@
 
             <div class="header__user" sec:authorize="isAuthenticated()">
                 <div class="header__user-btn" data-dropdown-btn="user">
-                    <img src="/assert/fonts/icons/avatars/A.svg" alt="avatar">
-<!--                    <div th:if="${user}">-->
-<!--                        <span th:text="${user.fullName}"></span>-->
-<!--                    </div>-->
-                    UserName
+                    <img th:src="@{'/assert/img/' + ${userCurrent.avatar}}" alt="avatar">
+                        <span th:text="${userCurrent.username}"></span>
+<!--                    UserName-->
                     <i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="user">

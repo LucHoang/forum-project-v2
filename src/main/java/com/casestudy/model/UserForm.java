@@ -11,8 +11,11 @@ import java.util.Set;
 @Data
 public class UserForm {
     private Long id;
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
+    @NotBlank
     private String fullName;
     private MultipartFile avatar;
     private String level = "New member";
