@@ -13,7 +13,7 @@ public class Reply{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long replyId;
 
-    @Size(max = 50)
+    @Size(max = 1000)
     private String content;
 
     private Long replyLike;

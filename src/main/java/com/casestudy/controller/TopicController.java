@@ -21,11 +21,13 @@ public class TopicController {
     public ModelAndView showDetailTopic(@PathVariable Long id){
         Optional<Topic> topic = topicService.findById(id);
         Iterable<Reply> reply = replyService.findAllByTopic(topic.get());
-//        topic.get().setTopicId(topic.get().g)
-//        topicService.save(topic.get());
+        Iterable<Topic> topTopics = topicService.findTopByTopicLike();
+        topic.get().setTopicView(topic.get().getTopicView()+1); // tang moi khi an vao detail topic
+        topicService.save(topic.get());
         if (topic.isPresent()) {
             ModelAndView modelAndView = new ModelAndView("/views/single-topic");
             modelAndView.addObject("topic", topic.get());
+            modelAndView.addObject("topTopic", topTopics);
             modelAndView.addObject("replies", reply);
             return modelAndView;
 

@@ -80,6 +80,14 @@
                     <li><a href="#">Follow Feed</a></li>
                 </ul>
             </div>
+            <div class="nav__thread">
+                <p>Thread Navigation:</p>
+            </div>
+            <div class="nav__thread">
+                <a th:href="@{'/'(page=${topics.number - 1})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i>Previous</a>
+                <span th:text="${topics.number + 1}"></span>/<span th:text="${topics.totalPages}"></span>&nbsp;&nbsp;&nbsp;</li>
+                <a th:href="@{'/'(page=${topics.number + 1})}" th:if="${topics.hasNext()}" class="nav__thread-btn nav__thread-btn--next">Next<i class="icon-Arrow_Right"></i></a>
+            </div>
         </div>
         <div class="posts">
             <div class="posts__head">
@@ -88,7 +96,7 @@
                 <div class="posts__users">Users</div>
                 <div class="posts__replies">Replies</div>
                 <div class="posts__views">Views</div>
-                <div class="posts__activity">Activity</div>
+                <div class="posts__activity">Date</div>
             </div>
             <div class="posts__body">
 
@@ -101,9 +109,10 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="posts__category"><a href="#" class="category"
-                                                        th:text="${topic.getCategory().getCateName()}"><i
-                                class="bg-368f8b"></i></a></div>
+                        <div class="posts__category">
+                            <a class="category" th:text="${topic.getCategory().getCateName()}">
+                                <i class="bg-368f8b"></i></a>
+                        </div>
                     </div>
                     <div class="posts__section-right">
                         <div class="posts__users">
@@ -112,8 +121,8 @@
                             </div>
                         </div>
                         <div class="posts__replies">31</div>
-                        <div class="posts__views">14.5k</div>
-                        <div class="posts__activity" th:text="${topic.getTopicDate()}"></div>
+                        <div class="posts__views" th:text="${topic.topicView}"></div>
+                        <div class="posts__activity" th:text="${topic.getSimpleDate()}"></div>
                     </div>
                 </div>
             </div>

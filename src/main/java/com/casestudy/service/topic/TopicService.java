@@ -30,6 +30,11 @@ public class TopicService implements ITopicService {
         return topicRepository.findAllByTitleContaining(title,pageable);
     }
 
+    @Override
+    public Iterable<Topic> findTopByTopicLike() {
+        return topicRepository.findTopByTopicLike();
+    }
+
 
     @Override
     public Iterable<Topic> findAll() {
