@@ -1,13 +1,13 @@
 <!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en-US">
 <head th:replace="/views/layout :: head">
 </head>
 <body>
-    <!-- HEADER -->
-    <header th:replace="/views/layout :: header">
+<!-- HEADER -->
+<header th:replace="/views/layout :: header">
 
-    </header>
-
+</header>
     <!-- MAIN -->
     <main>
         <div class="container">
@@ -83,15 +83,15 @@
                     <a href="#" class="nav__thread-btn nav__thread-btn--next">Next<i class="icon-Arrow_Right"></i></a>
                 </div>
             </div>
-            <div class="topics">
+            <div class="topics" th:object="${topic}">
                 <div class="topics__heading">
-                    <h2 class="topics__heading-title">Which movie have you watched most recently?</h2>
+                    <h2 class="topics__heading-title" th:text="${topic.title}"></h2>
                     <div class="topics__heading-info">
                         <a href="#" class="category"><i class="bg-3ebafa"></i> Exchange</a>
                         <div class="tags">
-                            <a href="#" class="bg-4f80b0">gaming</a>
-                            <a href="#" class="bg-424ee8">nature</a>
-                            <a href="#" class="bg-36b7d7">entertainment</a>
+                            <th:block th:each="hashtag : ${topic.hastags}">
+                            <a href="#" class="bg-4f80b0" th:text="${hashtag.hastagName}"></a>
+                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -100,33 +100,32 @@
                         <div class="topic">
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/B.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/B.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">
-                                        <a href="#">Benjamin Caesar</a>
+                                        <a href="#" th:text="${topic.user.username}"></a>
                                     </div>
-                                    <div class="topic__date"><i class="icon-Watch_Later"></i>06 May, 2017</div>
+                                    <div class="topic__date"><i class="icon-Watch_Later" th:text="${topic.topicDate}"></i></div>
                                 </div>
                             </div>
                             <div class="topic__content">
                                 <div class="topic__text">
-                                    <p>Welcome to Prey. A lot of this game is going to feel familiar — you’ll see bits and pieces from a dozen well-loved games in its DNA. But that doesn’t mean you’re going to immediately understand how everything works. That’s what we’re here for. Let’s talk about some of the habits you’re going to have to pick up, concepts you’ll have to learn and choices you’re going to be making as you play.</p>
-                                    <p>We’re going to break it down into three rough categories: Your world, your enemies (and ways to kill them) and yourself.</p>
+                                    <p th:text="${topic.content}"></p>
                                 </div>
                                 <div class="topic__footer">
                                     <div class="topic__footer-likes">
                                         <div>
                                             <a href="#"><i class="icon-Upvote"></i></a>
-                                            <span>201</span>
+                                            <span></span>
                                         </div>
                                         <div>
                                             <a href="#"><i class="icon-Downvote"></i></a>
-                                            <span>08</span>
+                                            <span th:text="${topic.topicDislike}"></span>
                                         </div>
                                         <div>
                                             <a href="#"><i class="icon-Favorite_Topic"></i></a>
-                                            <span>39</span>
+                                            <span th:text="${topic.topicLike}"></span>
                                         </div>
                                     </div>
                                     <div class="topic__footer-share">
@@ -150,14 +149,14 @@
                                         <div>
                                             <span class="topic__info-title">Created</span>
                                             <div  class="topic__info-avatar">
-                                                <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/B.svg" alt="avatar"></a>
+                                                <a href="#" class="avatar"><img src="fonts/icons/avatars/B.svg" alt="avatar"></a>
                                                 <span>13d</span>
                                             </div>
                                         </div>
                                         <div>
                                             <span class="topic__info-title">Last reply</span>
                                             <div  class="topic__info-avatar">
-                                                <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/A.svg" alt="avatar"></a>
+                                                <a href="#" class="avatar"><img src="fonts/icons/avatars/A.svg" alt="avatar"></a>
                                                 <span>4h</span>
                                             </div>
                                         </div>
@@ -190,15 +189,15 @@
                                     <p>Frequent Posters</p>
                                 </div>
                                 <div class="topic__posters">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/C.svg" alt="avatar"><span>10</span></a>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/U.svg" alt="avatar"><span>5</span></a>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/I.svg" alt="avatar"><span>12</span></a>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/K.svg" alt="avatar"></a>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/N.svg" alt="avatar"></a>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/T.svg" alt="avatar"></a>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/K.svg" alt="avatar"></a>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/L.svg" alt="avatar"></a>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/R.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/C.svg" alt="avatar"><span>10</span></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/U.svg" alt="avatar"><span>5</span></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/I.svg" alt="avatar"><span>12</span></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/K.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/N.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/T.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/K.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/L.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/R.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__title">
                                     <p>Popular Links</p>
@@ -227,7 +226,7 @@
                         <div class="topic">
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/N.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/N.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">
@@ -236,7 +235,7 @@
                                     <div class="topic__date">
                                         <div class="topic__user topic__user--pos-r">
                                             <i class="icon-Reply_Fill"></i>
-                                            <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/B.svg" alt="avatar"></a>
+                                            <a href="#" class="avatar"><img src="fonts/icons/avatars/B.svg" alt="avatar"></a>
                                             <a href="#" class="topic__user-name">Benjamin Caesar</a>
                                         </div>
                                         <i class="icon-Watch_Later"></i>06 May, 2017
@@ -277,12 +276,12 @@
                             </div>
                         </div>
                         <div class="topics__promo">
-                            <a href="#"><img src="assert/images/topic-promo.jpg" alt="promo"></a>
+                            <a href="#"><img src="images/topic-promo.jpg" alt="promo"></a>
                         </div>
                         <div class="topic">
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/T.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/T.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">
@@ -331,7 +330,7 @@
                         <div class="topic topic--comment">
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/L.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/L.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">
@@ -349,7 +348,7 @@
                         <div class="topic">
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/K.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/K.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">
@@ -365,7 +364,7 @@
                                         <div class="topic__head">
                                             <div class="topic__caption">
                                                 <div class="topic__user">
-                                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/T.svg" alt="avatar"></a>
+                                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/T.svg" alt="avatar"></a>
                                                     <a href="#" class="topic__user-name">Tesla</a>
                                                 </div>
                                             </div>
@@ -411,7 +410,7 @@
                         <div class="topic topic--selected">
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/C.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/C.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">
@@ -439,7 +438,7 @@
                         <div class="topic">
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/R.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/R.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">
@@ -484,7 +483,7 @@
                         <div class="topic">
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/L.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/L.svg" alt="avatar"></a>
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">
@@ -493,7 +492,7 @@
                                     <div class="topic__date">
                                         <div class="topic__user topic__user--pos-r">
                                             <i class="icon-Reply_Fill"></i>
-                                            <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/T.svg" alt="avatar"></a>
+                                            <a href="#" class="avatar"><img src="fonts/icons/avatars/T.svg" alt="avatar"></a>
                                             <a href="#" class="topic__user-name">Tesla</a>
                                         </div>
                                         <i class="icon-Watch_Later"></i>3d
@@ -591,13 +590,13 @@
                         <div class="posts__section-right">
                             <div class="posts__users">
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/A.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/A.svg" alt="avatar"></a>
                                 </div>
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/G.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/G.svg" alt="avatar"></a>
                                 </div>
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/P.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/P.svg" alt="avatar"></a>
                                 </div>
                             </div>
                             <div class="posts__replies">31</div>
@@ -624,10 +623,10 @@
                         <div class="posts__section-right">
                             <div class="posts__users">
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/L.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/L.svg" alt="avatar"></a>
                                 </div>
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/T.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/T.svg" alt="avatar"></a>
                                 </div>
                             </div>
                             <div class="posts__replies">252</div>
@@ -649,13 +648,13 @@
                         <div class="posts__section-right">
                             <div class="posts__users">
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/E.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/E.svg" alt="avatar"></a>
                                 </div>
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/I.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/I.svg" alt="avatar"></a>
                                 </div>
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/R.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/R.svg" alt="avatar"></a>
                                 </div>
                             </div>
                             <div class="posts__replies">207</div>
@@ -677,7 +676,7 @@
                         <div class="posts__section-right">
                             <div class="posts__users">
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/F.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/F.svg" alt="avatar"></a>
                                 </div>
                             </div>
                             <div class="posts__replies">2.3k</div>
@@ -703,13 +702,13 @@
                         <div class="posts__section-right">
                             <div class="posts__users">
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/C.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/C.svg" alt="avatar"></a>
                                 </div>
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/U.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/U.svg" alt="avatar"></a>
                                 </div>
                                 <div>
-                                    <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/I.svg" alt="avatar"></a>
+                                    <a href="#" class="avatar"><img src="fonts/icons/avatars/I.svg" alt="avatar"></a>
                                 </div>
                             </div>
                             <div class="posts__replies">441</div>
@@ -722,10 +721,10 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer th:replace="/views/layout :: footer">
+<!-- FOOTER -->
+<footer th:replace="/views/layout :: footer">
 
-    </footer>
+</footer>
 
 </body>
 </html>
