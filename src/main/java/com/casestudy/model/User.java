@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
@@ -29,7 +30,7 @@ public class User {
     private String fullName;
 
 //    @Column(nullable = true)
-    private String avatar;
+    private String avatar = "U.svg";
 
     @Column(nullable = true)
     private String level = "New member";

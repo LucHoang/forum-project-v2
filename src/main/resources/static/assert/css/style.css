@@ -3458,6 +3458,9 @@ a:hover {
 [class^="icon-"]::before {
   color: inherit;
 }
+.bg-ff0031{
+  background: #ff0031 !important;
+}
 .bg-f9bc64 {
   background-color: #f9bc64 !important;
 }
