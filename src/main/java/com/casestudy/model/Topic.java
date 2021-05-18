@@ -49,6 +49,10 @@ public class Topic{
 
     }
 
+    public Topic(User user) {
+        this.user = user;
+    }
+
     public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Long topicView, Category category, Set<Hastag> hastags, User user) {
         this.topicId = topicId;
         this.title = title;
