@@ -42,6 +42,11 @@
                             <a th:href="@{/home}" class="btn">Sign in now?</a>
                         </div>
                     </div>
+                    <div class="notify" style="text-align: center; color: red">
+                        <div th:if="${error}">
+                            <span th:text="${error}"></span>
+                        </div>
+                    </div>
 
                     <div class="row" data-visible="desktop">
                         <div class="col-md-12">
