@@ -46,6 +46,10 @@ public class Topic{
     @ManyToOne
     private User user;
 
+    public Topic(User user) {
+        this.user = user;
+    }
+
     public Topic() {
 
     }

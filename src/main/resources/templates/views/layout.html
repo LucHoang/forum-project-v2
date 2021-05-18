@@ -47,7 +47,7 @@
                         <li><a href="index.html">Home Page</a></li>
                         <li><a href="single-topic.html">Single Topic Page</a></li>
                         <li><a href="simple-signup.html">Sign up Page</a></li>
-                        <li><a href="create-topic.html">Create Topic Page</a></li>
+                        <li> <a th:href="@{/create-topic}">Create Topic Page</a></li>
                     </ul>
                 </nav>
             </div>
@@ -193,7 +193,7 @@
                     <img th:src="@{'/assert/img/' + ${userCurrent.avatar}}" alt="avatar">
 <!--                    <img src="C:Tai-Ve/ao-thun-it-not-bug-it-feature.png" alt="avatar">-->
 <!--                    <div th:if="${user}">-->
-                        <span th:text="${user}"></span>
+                        <span th:text="${userCurrent.username}"></span>
 <!--                    </div>-->
 <!--                    UserName-->
                     <i class="icon-Arrow_Below"></i>
