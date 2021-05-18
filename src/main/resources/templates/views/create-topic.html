@@ -39,18 +39,6 @@
                             </label>
                         </div>
                     </div>
-<!--                    <div class="col-md-6">-->
-<!--                        <div class="create__section">-->
-<!--                            <label class="create__label" for="sub-category">Select Sub Category</label>-->
-<!--                            <label class="custom-select">-->
-<!--                                <select id="sub-category">-->
-<!--                                    <option>Choose</option>-->
-<!--                                    <option>Choose #2</option>-->
-<!--                                    <option>Choose #3</option>-->
-<!--                                </select>-->
-<!--                            </label>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
                 <div class="create__section create__textarea">
                     <label class="create__label" for="description">Description</label>
@@ -79,80 +67,6 @@
                 <div class="create__section">
                     <label class="create__label" for="tags">Add Tags</label>
                     <input type="text" th:field="*{hastags}" class="form-control" id="tags" placeholder="e.g. nature, science">
-                </div>
-<!--                <div class="create__advanced">-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-lg-4 col-xl-4">-->
-<!--                            <div class="create__section">-->
-<!--                                <label class="create__label">Who can see this?</label>-->
-<!--                                <div class="create__radio">-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-radio">-->
-<!--                                            <input type="radio" name="can-see" checked="checked">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <span>Everyone</span>-->
-<!--                                    </label>-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-radio">-->
-<!--                                            <input type="radio" name="can-see">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <span>Only Friends</span>-->
-<!--                                    </label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-4 col-xl-3">-->
-<!--                            <div class="create__section">-->
-<!--                                <label class="create__label">Share on Social?</label>-->
-<!--                                <div class="create__radio">-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-checkbox">-->
-<!--                                            <input type="checkbox" name="share-social" checked="checked">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <i class="fa fa-facebook-square" aria-hidden="true"></i>-->
-<!--                                    </label>-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-checkbox">-->
-<!--                                            <input type="checkbox" name="share-social" checked="checked">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <i class="fa fa-twitter" aria-hidden="true"></i>-->
-<!--                                    </label>-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-checkbox">-->
-<!--                                            <input type="checkbox" name="share-social">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <i class="fa fa-google-plus" aria-hidden="true"></i>-->
-<!--                                    </label>-->
-<!--                                </div>-->
-                            </div>
-                        </div>
-<!--                        <div class="col-lg-4 col-xl-5">-->
-<!--                            <div class="create__section">-->
-<!--                                <label class="create__label">Is this a Mature Thread?</label>-->
-<!--                                <div class="create__radio">-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-radio">-->
-<!--                                            <input type="radio" name="mature-thread">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <span>Yes</span>-->
-<!--                                    </label>-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-radio">-->
-<!--                                            <input type="radio" name="mature-thread" checked="checked">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <span>No</span>-->
-<!--                                    </label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                    </div>
                     <th:block th:if="${message}">
                         <p th:text="${message}"></p>
                     </th:block>

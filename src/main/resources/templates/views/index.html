@@ -20,7 +20,7 @@
                     <nav  class="dropdown dropdown--design-01" data-dropdown-list="categories">
                         <ul  class="dropdown__catalog row">
                             <li th:each="category: ${categories}" class="col-xs-6">
-                                <a href="#" class="category">
+                                <a th:href="@{/get-topic-by-cate/__${category.cateId}__}" class="category">
                                     <i th:style="'background-color:'+${category.color}"></i>
                                     <span th:text="${category.getCateName()}"></span>
                                 </a>

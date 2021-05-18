@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,18 @@ public class HomePageController {
         modelAndView.addObject("topics", topicService.findAll(pageable));
         modelAndView.addObject("categories",categories());
         modelAndView.addObject("hastags",hastags());
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/get-topic-by-cate/{id}"})
+    public ModelAndView getListByCategory(@PathVariable String id,@PageableDefault(sort = {"title"}, value = 3) Pageable pageable) {
+        ModelAndView modelAndView;
+        try {
+            modelAndView = new ModelAndView("/views/index");
+            modelAndView.addObject("topics", topicService.findByCategoryCateId(Long.parseLong(id),pageable));
+            modelAndView.addObject("categories",categories());
+            modelAndView.addObject("hastags",hastags());
+        }catch (Exception e){  modelAndView = new ModelAndView("/views/404");}
         return modelAndView;
     }
 }

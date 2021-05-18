@@ -14,4 +14,5 @@ import java.util.Optional;
 public interface ITopicRepository extends PagingAndSortingRepository<Topic,Long> {
     Iterable<Topic> findAllByCategory(Category category);
     Page<Topic> findAllByTitleContaining(String firstname, Pageable pageable);
+    Page<Topic> findByCategoryCateId(Long cateId,Pageable pageable);
 }
