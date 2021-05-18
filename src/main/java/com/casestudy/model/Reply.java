@@ -3,7 +3,6 @@ package com.casestudy.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 @Data
@@ -14,14 +13,14 @@ public class Reply{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long replyId;
 
-    @Size(max = 1000)
+    @Size(max = 50)
     private String content;
 
-    private Long topicLike;
+    private Long replyLike;
 
-    private Long topicDislike;
+    private Long replyDislike;
 
-    private LocalDateTime topicDate;
+    private LocalDateTime replyDate;
 
     @ManyToOne
     private User user;
@@ -32,12 +31,12 @@ public class Reply{
     public Reply() {
     }
 
-    public Reply(Long replyId, @Size(max = 1000) String content, Long topicLike, Long topicDislike, LocalDateTime topicDate, User user, Topic topic) {
+    public Reply(Long replyId, @Size(max = 50) String content, Long replyLike, Long replyDislike, LocalDateTime replyDate, User user, Topic topic) {
         this.replyId = replyId;
         this.content = content;
-        this.topicLike = topicLike;
-        this.topicDislike = topicDislike;
-        this.topicDate = topicDate;
+        this.replyLike = replyLike;
+        this.replyDislike = replyDislike;
+        this.replyDate = replyDate;
         this.user = user;
         this.topic = topic;
     }
@@ -58,28 +57,28 @@ public class Reply{
         this.content = content;
     }
 
-    public Long getTopicLike() {
-        return topicLike;
+    public Long getReplyLike() {
+        return replyLike;
     }
 
-    public void setTopicLike(Long topicLike) {
-        this.topicLike = topicLike;
+    public void setReplyLike(Long topicLike) {
+        this.replyLike = topicLike;
     }
 
-    public Long getTopicDislike() {
-        return topicDislike;
+    public Long getReplyDislike() {
+        return replyDislike;
     }
 
-    public void setTopicDislike(Long topicDislike) {
-        this.topicDislike = topicDislike;
+    public void setReplyDislike(Long topicDislike) {
+        this.replyDislike = topicDislike;
     }
 
-    public LocalDateTime getTopicDate() {
-        return topicDate;
+    public LocalDateTime getReplyDate() {
+        return replyDate;
     }
 
-    public void setTopicDate(LocalDateTime topicDate) {
-        this.topicDate = topicDate;
+    public void setReplyDate(LocalDateTime topicDate) {
+        this.replyDate = topicDate;
     }
 
     public User getUser() {
