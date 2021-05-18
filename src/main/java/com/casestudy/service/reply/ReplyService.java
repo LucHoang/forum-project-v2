@@ -7,28 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
-public class ReplyService implements IReplyService{
+public class ReplyService implements IReplyService {
     @Autowired
     IReplyRepository replyRepository;
+
     @Override
     public Iterable<Reply> findAll() {
-        return null;
+        return replyRepository.findAll();
     }
 
     @Override
     public Optional<Reply> findById(Long id) {
-        return Optional.empty();
+        return replyRepository.findById(id);
     }
 
     @Override
     public void save(Reply reply) {
-
+        replyRepository.save(reply);
     }
 
     @Override
     public void remove(Long id) {
-
+        replyRepository.deleteById(id);
     }
 
     @Override

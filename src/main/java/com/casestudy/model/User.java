@@ -1,9 +1,14 @@
 package com.casestudy.model;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -11,20 +16,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(unique = true, nullable = false)
     private String username;
 
+    @NotBlank
     @Column(nullable = false)
     private String password;
 
+    @NotBlank
     @Column(nullable = false)
     private String fullName;
 
-    @Column(nullable = true)
+//    @Column(nullable = true)
     private String avatar;
 
     @Column(nullable = true)
-    private String level;
+    private String level = "New member";
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -32,14 +40,57 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
+    private LocalDateTime dateCreate = LocalDateTime.now();
+
     public User() {
     }
 
-    public User(String username, String password, String fullName, Set<Role> roles) {
+    public User(String username, String password, String fullName) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
+    }
+
+    public User(Long id, String username, String password, String fullName, String avatar, String level, Set<Role> roles, LocalDateTime dateCreate) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.avatar = avatar;
+        this.level = level;
         this.roles = roles;
+        this.dateCreate = dateCreate;
+    }
+
+    public User(String username, String password, String fullName, String fileName) {
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.avatar = fileName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public LocalDateTime getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(LocalDateTime dateCreate) {
+        this.dateCreate = dateCreate;
     }
 
     public Long getId() {

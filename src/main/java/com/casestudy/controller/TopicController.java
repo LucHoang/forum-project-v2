@@ -5,13 +5,15 @@ import com.casestudy.model.Topic;
 import com.casestudy.service.reply.IReplyService;
 import com.casestudy.service.topic.ITopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 @Controller
+
 public class TopicController {
     @Autowired
     private ITopicService topicService;
@@ -37,4 +39,12 @@ public class TopicController {
         }
 
     }
+//    @GetMapping
+//    public ResponseEntity<Iterable<Reply>> allReply() {
+//        return new ResponseEntity<>(replyService.findAll(), HttpStatus.OK);
+//    }
+//    @PostMapping
+//    public ResponseEntity<Reply> createReply(@RequestBody Reply reply) {
+//        return new ResponseEntity<>(replyService.save(reply), HttpStatus.CREATED);
+//    }
 }
