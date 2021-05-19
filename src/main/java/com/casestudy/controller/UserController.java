@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
@@ -35,6 +37,18 @@ public class UserController {
 
     @Value("${upload.path}")
     private String fileUpload;
+
+    private String getPrincipal() {
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails) principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        return userName;
+    }
 
     @GetMapping("/create-user")
     public ModelAndView showCreateForm() {
@@ -136,6 +150,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("/front-dashboard/users");
         modelAndView.addObject("users", users);
         modelAndView.addObject("listUser", listUser);
+        modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
         return modelAndView;
     }
 
@@ -145,6 +160,7 @@ public class UserController {
         if (user.isPresent()) {
             ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
             modelAndView.addObject("user", user.get());
+            modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
             return modelAndView;
         } else {
             ModelAndView modelAndView = new ModelAndView("/views/404");

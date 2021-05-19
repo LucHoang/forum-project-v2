@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,6 +39,11 @@ public class SecurityController {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    @ModelAttribute("userCurrent")
+    public User userOptional(){
+        return userService.findByUsername(getPrincipal()).get();
     }
 
     @GetMapping(value = {"/home"})
