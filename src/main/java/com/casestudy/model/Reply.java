@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "replies")
 public class Reply{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long replyId;
 
     @Size(max = 1000)
@@ -22,6 +22,8 @@ public class Reply{
 
     private LocalDateTime replyDate;
 
+    private Long commentId;
+
     @ManyToOne
     private User user;
 
@@ -31,12 +33,17 @@ public class Reply{
     public Reply() {
     }
 
-    public Reply(Long replyId, @Size(max = 50) String content, Long replyLike, Long replyDislike, LocalDateTime replyDate, User user, Topic topic) {
+    public Reply(String content) {
+        this.content = content;
+    }
+
+    public Reply(Long replyId, @Size(max = 1000) String content, Long replyLike, Long replyDislike, LocalDateTime replyDate, Long commentId, User user, Topic topic) {
         this.replyId = replyId;
         this.content = content;
         this.replyLike = replyLike;
         this.replyDislike = replyDislike;
         this.replyDate = replyDate;
+        this.commentId = commentId;
         this.user = user;
         this.topic = topic;
     }
@@ -81,6 +88,14 @@ public class Reply{
         this.replyDate = topicDate;
     }
 
+    public Long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
     public User getUser() {
         return user;
     }
@@ -96,4 +111,6 @@ public class Reply{
     public void setTopic(Topic topic) {
         this.topic = topic;
     }
+
+
 }

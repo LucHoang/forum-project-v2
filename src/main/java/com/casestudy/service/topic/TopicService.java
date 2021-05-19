@@ -34,6 +34,12 @@ public class TopicService implements ITopicService {
     }
 
     @Override
+    public Iterable<Topic> findTopByTopicLike() {
+        return topicRepository.findTopByTopicLike();
+    }
+
+
+    @Override
     public Iterable<Topic> findAll() {
         return topicRepository.findAll();
     }

@@ -67,26 +67,5 @@ public class SecurityController {
         model.addAttribute("user", getPrincipal());
         return "redirect:cities";
     }
-//    @GetMapping("/detail")
-//    public String showDetailTopic(ModelMap modelMap) {
-//        modelMap.addAttribute("topic", getPrincipal());
-//        return "/views/single-topic";
-//    }
 
-    @GetMapping("/detail/{id}")
-    public ModelAndView showDetailTopic(@PathVariable Long id){
-        Optional<Topic> topic = topicService.findById(id);
-        Iterable<Reply> reply = replyService.findAllByTopic(topic.get());
-        if (topic.isPresent()) {
-            ModelAndView modelAndView = new ModelAndView("/views/single-topic");
-            modelAndView.addObject("topic", topic.get());
-            modelAndView.addObject("replies", reply);
-            return modelAndView;
-
-        } else {
-            ModelAndView modelAndView = new ModelAndView("/error.404");
-            return modelAndView;
-        }
-
-    }
 }

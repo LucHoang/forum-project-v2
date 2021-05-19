@@ -219,7 +219,7 @@
                 </nav>
             </div>
         </div>
-        <div class="header__offset-btn">
+        <div class="header__offset-btn" sec:authorize="isAuthenticated()">
             <a th:href="@{/create-topic}"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
         </div>
     </div>

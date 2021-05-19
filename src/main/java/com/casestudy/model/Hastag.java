@@ -14,7 +14,7 @@ public class Hastag {
     private Long hastagId;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(min = 1,max = 8)
     private String hastagName;
 
     private String color;
@@ -24,19 +24,19 @@ public class Hastag {
     @ManyToMany(mappedBy = "hastags")
     private Set<Topic> topics = new HashSet<>();
 
-    public Hastag(Long hastagId, @NotBlank @Size(max = 50) String hastagName, String color) {
+    public Hastag(Long hastagId, @NotBlank @Size(min=1,max = 8) String hastagName, String color) {
         this.hastagId = hastagId;
         this.hastagName = hastagName;
         this.color = color;
     }
 
-    public Hastag(@NotBlank @Size(max = 50) String hastagName,String color, Set<Topic> topics) {
+    public Hastag(@NotBlank @Size(min=1,max = 8) String hastagName,String color, Set<Topic> topics) {
         this.hastagName = hastagName;
         this.topics = topics;
         this.color = color;
     }
 
-    public Hastag(@NotBlank @Size(max = 50) String hastagName) {
+    public Hastag(@NotBlank @Size(min=1,max = 8) String hastagName) {
         this.hastagName = hastagName;
     }
 
