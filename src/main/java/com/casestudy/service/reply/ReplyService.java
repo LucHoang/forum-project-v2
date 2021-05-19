@@ -24,8 +24,8 @@ public class ReplyService implements IReplyService {
     }
 
     @Override
-    public void save(Reply reply) {
-        replyRepository.save(reply);
+    public Reply save(Reply reply) {
+        return replyRepository.save(reply);
     }
 
     @Override
