@@ -1,34 +1,31 @@
 package com.casestudy.controller;
 
 import com.casestudy.model.Category;
-import com.casestudy.model.Hastag;
+import com.casestudy.model.Reply;
 import com.casestudy.model.Topic;
 import com.casestudy.model.User;
-import com.casestudy.repository.ITopicRepository;
 import com.casestudy.service.category.ICategoryService;
 import com.casestudy.service.reply.IReplyService;
 import com.casestudy.service.topic.ITopicService;
 import com.casestudy.service.user.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 @Controller
+
 public class TopicController {
+
     @Autowired
     private ITopicService topicService;
 
@@ -57,7 +54,26 @@ public class TopicController {
         return userName;
     }
 
+    @GetMapping("/detail/{id}")
+    public ModelAndView showDetailTopic(@PathVariable Long id){
+        Optional<Topic> topic = topicService.findById(id);
+        Iterable<Reply> reply = replyService.findAllByTopic(topic.get());
+        Iterable<Topic> topTopics = topicService.findTopByTopicLike();
+        topic.get().setTopicView(topic.get().getTopicView()+1); // tang moi khi an vao detail topic
+        topicService.save(topic.get());
+        if (topic.isPresent()) {
+            ModelAndView modelAndView = new ModelAndView("/views/single-topic");
+            modelAndView.addObject("topic", topic.get());
+            modelAndView.addObject("topTopic", topTopics);
+            modelAndView.addObject("replies", reply);
+            return modelAndView;
 
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/error.404");
+            return modelAndView;
+        }
+
+    }
 
     @GetMapping("/create-topic")
     public ModelAndView showCreateTopic(Model model) {
@@ -75,8 +91,6 @@ public class TopicController {
 //        if (bindingResult.hasFieldErrors()) {
 //            return new ModelAndView("/views/create-tes");
 //        }
-
-
         topic.setTopicDate(LocalDateTime.now());
         topicService.save(topic);
         ModelAndView modelAndView = new ModelAndView("/views/create-topic");
