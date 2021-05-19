@@ -2,10 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>User Management Data Table</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   <!------ Include the above in your HEAD tag ---------->
+
+  <th:block th:replace="/views/layout :: head">
+  </th:block>
+
   <style>
     a:hover {
       color: white;
@@ -38,6 +50,9 @@
   <title>CRUD</title>
 </head>
 <body>
+<header th:replace="/views/layout :: header">
+</header>
+
 <form class="form-horizontal" th:action="@{/delete-user}" th:object="${user}" method="post">
 <fieldset>
 
@@ -120,8 +135,7 @@
 </form>
 
 <!--<footer th:replace="/layout :: footer"></footer>-->
-<footer th:fragment="footer" style="text-align: center">
-  &copy; 2021
+<footer th:replace="/views/layout :: footer">
 </footer>
 </body>
 </html>
