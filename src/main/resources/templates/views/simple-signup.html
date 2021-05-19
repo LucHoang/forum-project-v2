@@ -52,7 +52,7 @@
                         <div class="col-md-12">
                             <div class="signup__section">
                                 <label class="signup__label" for="first-name">Full Name</label>
-                                <input name="fullName" type="text" class="form-control" id="first-name" value="Jane" th:field="*{fullName}">
+                                <input name="fullName" required="" type="text" class="form-control" id="first-name" value="Jane" th:field="*{fullName}">
                                 <span style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name Error</span>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="signup__section">
                         <label class="signup__label" for="username">Username</label>
-                        <input name="username" type="text" class="form-control" id="username" value="Janeunity9" th:field="*{username}">
+                        <input name="username" required="" type="text" class="form-control" id="username" value="Janeunity9" th:field="*{username}">
                         <span style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</span>
                     </div>
 <!--                    <div class="signup__section">-->
@@ -75,7 +75,7 @@
                     <div class="signup__section">
                         <label class="signup__label" for="password">Password</label>
                         <div class="message-input">
-                            <input name="password" type="password" class="form-control" id="password" value="*********" th:field="*{password}">
+                            <input name="password" required="" type="password" class="form-control" id="password" value="*********" th:field="*{password}">
                             <span style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</span>
 <!--                            <span class="message-input__strong">strong</span>-->
                         </div>

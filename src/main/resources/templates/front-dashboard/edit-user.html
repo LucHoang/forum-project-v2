@@ -60,21 +60,33 @@
         </div>
 
         <input type="hidden" th:field="*{id}"/>
-        <input type="hidden" th:field="*{password}"/>
+        <!--        <input type="hidden" th:field="*{password}"/>-->
         <input type="hidden" th:field="*{dateCreate}"/>
         <!-- Text input-->
         <div class="form-group">
-            <label class="col-md-4 control-label" for="product_name">User Name</label>
-            <div class="col-md-4">
+            <label class="col-md-4 control-label" for="product_name">User name</label>
+            <div class="col-md-4" sec:authorize="hasRole('ADMIN')">
                 <input id="product_name" name="username" class="form-control input-md" required="" type="text"
                        VALUE="${user.getUsername()}" th:field="*{username}">
+                <span style="color: red" th:if="${#fields.hasErrors('username')}"
+                      th:errors="*{username}">Name Error</span>
+            </div>
+            <div class="col-md-4" sec:authorize="hasRole('MOD')">
+                <input id="product_name" name="username" class="form-control input-md" required="" type="text"
+                       VALUE="${user.getUsername()}" th:field="*{username}" readonly>
+                <span style="color: red" th:if="${#fields.hasErrors('username')}"
+                      th:errors="*{username}">Name Error</span>
+            </div>
+            <div class="col-md-4" sec:authorize="hasRole('MEMBER')">
+                <input id="product_name" name="username" class="form-control input-md" required="" type="text"
+                       VALUE="${user.getUsername()}" th:field="*{username}" readonly>
                 <span style="color: red" th:if="${#fields.hasErrors('username')}"
                       th:errors="*{username}">Name Error</span>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-md-4 control-label" for="product_name">Full Name</label>
+            <label class="col-md-4 control-label" for="product_name">Full name</label>
             <div class="col-md-4">
                 <input id="product_name2" name="fullName" class="form-control input-md" required="" type="text"
                        VALUE="${user.getFullName()}" th:field="*{fullName}">
@@ -84,11 +96,31 @@
         </div>
 
         <div class="form-group">
+            <label class="col-md-4 control-label" for="product_name">Password</label>
+            <div class="col-md-4">
+                <input id="product_weight" name="password" class="form-control input-md" required="" type="password"
+                       th:value="${user.password}">
+                <span style="color: red" th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}">Name Error</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="product_name">Confirm password</label>
+            <div class="col-md-4">
+                <input id="available_quantity" name="confirmPassword" class="form-control input-md" required=""
+                       type="password"
+                       th:value="${user.password}">
+                <!--                <span style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</span>-->
+            </div>
+        </div>
+
+        <div class="form-group" sec:authorize="hasRole('ADMIN')">
             <label class="col-md-4 control-label" for="product_name">Role</label>
             <div class="col-md-4">
                 <!--        <input id="product_name2" name="nation" class="form-control input-md" required="" type="text" VALUE="${city.nation.name}" th:field="*{nation.name}">-->
 
-                <select name="role" id="product_categorie" class="form-control input-md">
+                <select name="role" id="product_categorie" class="form-control input-md" style="color: red">
                     <!--          <option th:each="p : ${nations}"-->
                     <!--                  th:value="${p.id}"-->
                     <!--                  th:text="${p.name}"-->
@@ -101,11 +133,26 @@
             </div>
         </div>
 
+        <div class="form-group" sec:authorize="hasRole('MOD')">
+            <label class="col-md-4 control-label" for="product_name">Role</label>
+            <div class="col-md-4">
+                <input id="product_categorie" name="role" class="form-control input-md" required=""
+                       type="text" th:value="${userRole}" readonly>
+            </div>
+        </div>
+        <div class="form-group" sec:authorize="hasRole('MEMBER')">
+            <label class="col-md-4 control-label" for="product_name">Role</label>
+            <div class="col-md-4">
+                <input id="product_categorie" name="role" class="form-control input-md" required=""
+                       type="text" th:value="${userRole}" readonly>
+            </div>
+        </div>
+
         <!-- Text input-->
-        <div class="form-group">
+        <div class="form-group" sec:authorize="hasRole('ADMIN')">
             <label class="col-md-4 control-label" for="product_name_fr">Level</label>
             <div class="col-md-4">
-                <input id="product_name_fr" name="area" class="form-control input-md" required="" type="text"
+                <input id="product_name_fr" name="level" class="form-control input-md" required="" type="text"
                        VALUE="${city.getLevel()}" th:field="*{level}">
                 <span style="color: red" th:if="${#fields.hasErrors('level')}" th:errors="*{level}">Name Error</span>
             </div>
@@ -144,10 +191,14 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="filebutton">Avatar</label>
             <div class="col-md-4" style="">
-      <span th:if="*{avatar}">
+
+                <span th:if="${userAvatar}">
+        <img width="100" height="100" th:src="@{'/assert/img/' + ${userAvatar}}" alt="avatar">
+      </span>
+      <span th:unless="${userAvatar}">
         <img width="100" height="100" th:src="@{'/assert/img/' + *{avatar}}" alt="avatar">
       </span>
-                <input id="filebutton" name="filebutton" class="input-file" type="file" th:field="*{avatar}">
+                <input id="filebutton" name="avatar" class="input-file" type="file" th:field="*{avatar}">
             </div>
         </div>
 
@@ -156,7 +207,7 @@
             <label class="col-md-4 control-label" for="singlebutton">Action</label>
             <div class="col-md-4">
                 <button class="button button">Update</button>
-                <a th:href="@{/list-user}" class="button button" style="background-color: #666666">Back</a>
+                <a th:href="@{/home}" class="button button" style="background-color: #666666">Home</a>
             </div>
         </div>
 
