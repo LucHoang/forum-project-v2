@@ -1,7 +1,6 @@
 package com.casestudy.controller;
 
 import com.casestudy.model.Role;
-import com.casestudy.model.RoleName;
 import com.casestudy.model.User;
 import com.casestudy.model.UserForm;
 import com.casestudy.service.user.AppUserService;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -123,6 +120,7 @@ public class UserController {
             boolean isAdmin = false;
             boolean isMod = false;
             boolean isMember = false;
+            boolean isSus = false;
             for (Role role: user.getRoles()) {
                 switch (role.getName()) {
                     case "ROLE_ADMIN":
@@ -134,6 +132,9 @@ public class UserController {
                     case "ROLE_MEMBER":
                         isMember = true;
                         break;
+                    case "ROLE_SUS":
+                        isSus = true;
+                        break;
                 }
             }
             if (isAdmin) {
@@ -142,7 +143,7 @@ public class UserController {
                 listUser.put(user.getId(), "MOD");
             } else if (isMember){
                 listUser.put(user.getId(), "MEMBER");
-            } else {
+            } else if (isSus){
                 listUser.put(user.getId(), "SUS");
             }
         }
@@ -158,8 +159,18 @@ public class UserController {
     public ModelAndView showEditForm(@PathVariable Long id) {
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
+            String userRole = user.get().getRoles().toString();
+            for (Role role: user.get().getRoles()) {
+                if (role.getName().equals("ROLE_SUS")) {
+                    userRole = "ROLE_SUS";
+                    break;
+                }
+                userRole = role.getName();
+            }
+
             ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
             modelAndView.addObject("user", user.get());
+            modelAndView.addObject("userRole", userRole);
             modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
             return modelAndView;
         } else {
@@ -169,7 +180,8 @@ public class UserController {
     }
 
     @PostMapping("/edit-user")
-    public ModelAndView updateCity(@Validated @ModelAttribute("user") UserForm userRequest, BindingResult bindingResult, @RequestParam("role") Optional<String> roleText) {
+    public ModelAndView updateCity(@Validated @ModelAttribute("user") UserForm userRequest, BindingResult bindingResult,
+                                   @RequestParam("role") Optional<String> roleText, @RequestParam("confirmPassword") Optional<String> confirmPassword) {
         if (bindingResult.hasFieldErrors()) {
             return new ModelAndView("/front-dashboard/edit-user");
         }
@@ -192,32 +204,74 @@ public class UserController {
             e.printStackTrace();
         }
 
-        if (fileName.equals("")) {
-            fileName = userTemp.get().getAvatar();
+        if (Objects.equals(fileName, "")) {
+            if (userTemp.isPresent()) {
+                fileName = userTemp.get().getAvatar();
+            }
         }
+
+        if (confirmPassword.isPresent()) {
+            if (!confirmPassword.get().equals(userRequest.getPassword())) {
+                ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
+                modelAndView.addObject("error", "Confirmation password is not correct!!!");
+                modelAndView.addObject("userAvatar", fileName);
+                return modelAndView;
+            }
+        }
+
         User user = new User(userRequest.getId(),userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), fileName,
                 userRequest.getLevel(), userRequest.getDateCreate());
 
-        Set<Role> roles = new HashSet<>();
-        Role userRole;
 
-        if (roleText.get().equals("ROLE_ADMIN")) {
-            userRole = new Role(1L, "ROLE_ADMIN");
-        } else if (roleText.get().equals("ROLE_MOD")) {
-            userRole = new Role(4L, "ROLE_MOD");
-        } else if (roleText.get().equals("ROLE_MEMBER")) {
-            userRole = new Role(2L, "ROLE_MEMBER");
-        } else {
-            userRole = new Role(5L, "ROLE_SUS");
+        if (roleText.isPresent()) {
+            Set<Role> roles = new HashSet<>();
+            List<Role> userRole = new ArrayList<>();
+
+            if (roleText.get().equals("ROLE_ADMIN")) {
+                userRole.add(new Role(1L, "ROLE_ADMIN"));
+//            userRole.add(new Role(4L, "ROLE_MOD"));
+//            userRole.add(new Role(2L, "ROLE_MEMBER"));
+            } else if (roleText.get().equals("ROLE_MOD")) {
+                userRole.add(new Role(4L, "ROLE_MOD"));
+//            userRole.add(new Role(2L, "ROLE_MEMBER"));
+            } else if (roleText.get().equals("ROLE_MEMBER")) {
+                userRole.add(new Role(2L, "ROLE_MEMBER"));
+            } else {
+                userRole.add(new Role(5L, "ROLE_SUS"));
+                userRole.add(new Role(2L, "ROLE_MEMBER"));
+            }
+
+            roles.addAll(userRole);
+
+            user.setRoles(roles);
         }
-
-        roles.add(userRole);
-        user.setRoles(roles);
 
         userService.save(user);
         ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("userRole", roleText.get());
         modelAndView.addObject("success", "User updated successfully");
         return modelAndView;
+    }
+
+    @GetMapping("/delete-user/{id}")
+    public ModelAndView showDeleteForm(@PathVariable Long id) {
+        Optional<User> user = userService.findById(id);
+        if (user.isPresent()) {
+            ModelAndView modelAndView = new ModelAndView("/front-dashboard/delete-user");
+            modelAndView.addObject("user", user.get());
+            modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
+            return modelAndView;
+
+        } else {
+            ModelAndView modelAndView = new ModelAndView("views/404");
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/delete-user")
+    public String deleteCity(@ModelAttribute("user") User user) {
+        userService.remove(user.getId());
+        return "redirect:list-user";
     }
 }

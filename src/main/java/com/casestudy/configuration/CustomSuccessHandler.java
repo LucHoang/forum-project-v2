@@ -52,10 +52,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             //Nếu là tài khoản đăng nhập có role là DBA thì điều hướng đến /dba
             url = "/dba";
         } else if (isAdmin(roles)) {
-            //Nếu là tài khoản đăng nhập có role là ADMIN thì điều hướng đến /admin
-            url = "/admin";
+            url = "/home";
+        } else if (isMod(roles)) {
+            url = "/home";
         } else if (isMember(roles)) {
-            //Nếu là tài khoản đăng nhập có role là MEMBER thì điều hướng đến /home
+            url = "/home";
+        } else if (isSus(roles)) {
             url = "/home";
         } else {
             //Nếu tài khoản đăng nhập không có quyền truy cập sẽ điều hướng tới /accessDenied
@@ -81,6 +83,20 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private boolean isDba(List<String> roles) {
         if (roles.contains("ROLE_DBA")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isMod(List<String> roles) {
+        if (roles.contains("ROLE_MOD")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isSus(List<String> roles) {
+        if (roles.contains("ROLE_SUS")) {
             return true;
         }
         return false;

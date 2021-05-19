@@ -29,7 +29,7 @@ public class AppUserService implements UserDetailsService, IUserService {
 
     @Override
     public Iterable<User> findAll() {
-        return null;
+        return iUserRepository.findAll();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class AppUserService implements UserDetailsService, IUserService {
 
     @Override
     public void remove(Long id) {
-
+        iUserRepository.deleteById(id);
     }
 
     @Override
