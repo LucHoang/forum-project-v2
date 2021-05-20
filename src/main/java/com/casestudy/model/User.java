@@ -21,7 +21,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @NotBlank
+//    @NotBlank
     @Column(nullable = false)
     private String password;
 
@@ -60,6 +60,16 @@ public class User {
         this.avatar = avatar;
         this.level = level;
         this.roles = roles;
+        this.dateCreate = dateCreate;
+    }
+
+    public User(Long id, String username, String password, String fullName, String avatar, String level, LocalDateTime dateCreate) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.avatar = avatar;
+        this.level = level;
         this.dateCreate = dateCreate;
     }
 

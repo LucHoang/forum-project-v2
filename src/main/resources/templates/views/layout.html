@@ -40,7 +40,7 @@
                     <img src="/assert/fonts/icons/main/Logo_Forum.svg" alt="logo">
                 </h1>
                 <div class="header__logo-btn" >
-                    <a th:href="@{/}">Unity</a><i class="icon-Arrow_Below"></i>
+                    <a th:href="@{/home}">Unity</a><i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="logo">
                     <ul class="dropdown__catalog">
@@ -189,11 +189,9 @@
 
             <div class="header__user" sec:authorize="isAuthenticated()">
                 <div class="header__user-btn" data-dropdown-btn="user">
-                    <img src="/assert/fonts/icons/avatars/A.svg" alt="avatar">
-<!--                    <div th:if="${user}">-->
-<!--                        <span th:text="${user.fullName}"></span>-->
-<!--                    </div>-->
-                    UserName
+                    <img th:src="@{'/assert/img/' + ${userCurrent.avatar}}" alt="avatar">
+                        <span th:text="${userCurrent.username}"></span>
+<!--                    UserName-->
                     <i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="user">
@@ -207,8 +205,8 @@
                     </div>
                     <div>
                         <ul class="dropdown__catalog">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Badges</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/list-user}">Dashboard</a></li>
+                            <li><a th:href="@{/edit-user/{id}(id=${userCurrent.id})}">Account setting</a></li>
                             <li><a href="#">My Groups</a></li>
                             <li><a href="#">Notifications</a></li>
                             <li><a href="#">Topics</a></li>
