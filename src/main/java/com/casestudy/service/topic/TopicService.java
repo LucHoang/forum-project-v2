@@ -64,4 +64,14 @@ public class TopicService implements ITopicService {
     public Page<Topic> findByCategoryCateId(Long cateId, Pageable pageable) {
         return topicRepository.findByCategoryCateId(cateId,pageable);
     }
+
+    @Override
+    public Page<Topic> findTopicByHastagId(Long hastagId,Pageable pageable) {
+        return topicRepository.findTopicByHastagId(hastagId,pageable);
+    }
+
+    @Override
+    public Page<Topic> findTopicByTitle(String title,Pageable pageable) {
+        return topicRepository.findTopicByTitleContains(title,pageable);
+    }
 }
