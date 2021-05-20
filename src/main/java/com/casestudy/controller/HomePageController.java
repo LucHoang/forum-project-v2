@@ -16,13 +16,14 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 
@@ -77,16 +78,44 @@ public class HomePageController {
     }
 
     @GetMapping(value = {"/"})
-    public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable) {
+    public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable, @CookieValue(value = "setUser", defaultValue = "") String setUser,
+                                  HttpServletResponse response, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/views/index");
         modelAndView.addObject("categories",categories());
         modelAndView.addObject("hastags",hastags());
         modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
         modelAndView.addObject("topics", topicService.findAll(pageable));
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
-        if(userCurrent.isPresent()){
+        if(userCurrent.isPresent()) {
             modelAndView.addObject("userCurrent", userCurrent.get());
+//        }
+
+            if (userCurrent.get().getUsername() != null)
+                setUser = userCurrent.get().getUsername();
+
+            // create cookie and set it in response
+            Cookie cookie = new Cookie("setUser", setUser);
+            cookie.setMaxAge(24 * 60 * 60 * 10);
+            response.addCookie(cookie);
+
+            //get all cookies
+            Cookie[] cookies = request.getCookies();
+            //iterate each cookie
+            for (Cookie ck : cookies) {
+                //display only the cookie with the name 'setUser'
+                if (ck.getName().equals("setUser")) {
+                    modelAndView.addObject("cookieValue", ck);
+                    break;
+                } else {
+                    ck.setValue("");
+                    modelAndView.addObject("cookieValue", ck);
+                    break;
+                }
+            }
+//            model.addAttribute("message", "Login success. Welcome ");
         }
+
+
         return modelAndView;
     }
 
@@ -103,15 +132,19 @@ public class HomePageController {
     }
 
     @GetMapping(value = {"/login"})
-    public ModelAndView test() {
+    public ModelAndView test(@CookieValue(value = "setUser", defaultValue = "") String setUser) {
         ModelAndView modelAndView = new ModelAndView("/views/signin");
+        Cookie cookie = new Cookie("setUser", setUser);
+        modelAndView.addObject("cookieValue", cookie);
         return modelAndView;
     }
 
     @GetMapping(value = {"/login_error"})
-    public ModelAndView loginError() {
+    public ModelAndView loginError(@CookieValue(value = "setUser", defaultValue = "") String setUser) {
         ModelAndView modelAndView = new ModelAndView("/views/signin");
         modelAndView.addObject("error", "Incorrect username or password !!!");
+        Cookie cookie = new Cookie("setUser", setUser);
+        modelAndView.addObject("cookieValue", cookie);
         return modelAndView;
     }
 }
