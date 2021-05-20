@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .and().exceptionHandling().accessDeniedPage("/accessDenied");
         http.csrf().disable();
-        http.authorizeRequests();
+//        http.authorizeRequests().and().rememberMe();
 
         http.logout().logoutSuccessUrl("/");
 //                .rememberMe().tokenRepository(this.persistentTokenRepository()) //
