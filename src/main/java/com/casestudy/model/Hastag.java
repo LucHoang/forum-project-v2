@@ -3,8 +3,9 @@ package com.casestudy.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "hastag")
@@ -22,7 +23,7 @@ public class Hastag {
     public Hastag() {
     }
     @ManyToMany(mappedBy = "hastags")
-    private Set<Topic> topics = new HashSet<>();
+    private List<Topic> topics = new ArrayList<>();
 
     public Hastag(Long hastagId, @NotBlank @Size(min=1,max = 8) String hastagName, String color) {
         this.hastagId = hastagId;
@@ -30,7 +31,7 @@ public class Hastag {
         this.color = color;
     }
 
-    public Hastag(@NotBlank @Size(min=1,max = 8) String hastagName,String color, Set<Topic> topics) {
+    public Hastag(@NotBlank @Size(min=1,max = 8) String hastagName, String color, List<Topic> topics) {
         this.hastagName = hastagName;
         this.topics = topics;
         this.color = color;

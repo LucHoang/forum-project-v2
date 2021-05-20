@@ -10,6 +10,8 @@ import com.casestudy.service.topic.TopicService;
 import com.casestudy.service.user.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,9 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Controller
@@ -39,6 +39,7 @@ public class HomePageController {
 
     @Autowired
     private AppUserService userService;
+
 
     private String getPrincipal() {
         String userName = null;
@@ -66,13 +67,22 @@ public class HomePageController {
         return hastags;
     }
 
+    @ModelAttribute
+    private Map<Long,List<Hastag>> listHastagWithTopicId(){
+        Map<Long,List<Hastag>> listHastagWithTopicId = new HashMap<>();
+        for (Topic topic: topicService.findAll()) {
+            listHastagWithTopicId.put(topic.getTopicId(),topic.getHastags());
+        }
+        return  listHastagWithTopicId;
+    }
+
     @GetMapping(value = {"/"})
     public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("/views/index");
-        modelAndView.addObject("topics", topicService.findAll(pageable));
         modelAndView.addObject("categories",categories());
         modelAndView.addObject("hastags",hastags());
-
+        modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
+        modelAndView.addObject("topics", topicService.findAll(pageable));
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         if(userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());
@@ -81,7 +91,7 @@ public class HomePageController {
     }
 
     @GetMapping(value = {"/get-topic-by-cate/{id}"})
-    public ModelAndView getListByCategory(@PathVariable String id,@PageableDefault(sort = {"title"}, value = 3) Pageable pageable) {
+    public ModelAndView getListByCategory(@PathVariable String id,@PageableDefault(sort = {"title"},size = 3, value = 3) Pageable pageable) {
         ModelAndView modelAndView;
         try {
             modelAndView = new ModelAndView("/views/index");
@@ -91,4 +101,10 @@ public class HomePageController {
         }catch (Exception e){  modelAndView = new ModelAndView("/views/404");}
         return modelAndView;
     }
+    @GetMapping(value = {"/login"})
+    public ModelAndView test() {
+        ModelAndView modelAndView = new ModelAndView("/views/404");
+        return modelAndView;
+    }
 }
+

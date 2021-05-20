@@ -3,13 +3,10 @@ package com.casestudy.controller;
 import com.casestudy.model.*;
 import com.casestudy.service.category.ICategoryService;
 import com.casestudy.service.hastag.HastagService;
-import com.casestudy.service.hastag.IHastagService;
 import com.casestudy.service.reply.IReplyService;
 import com.casestudy.service.topic.ITopicService;
 import com.casestudy.service.user.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -20,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 
@@ -96,7 +90,7 @@ public class TopicController {
     public ModelAndView saveTopic(@Validated @ModelAttribute("topic") Topic topic,@RequestParam String inputHastag,BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView("/views/create-topic");
         String[] arrayHastag = inputHastag.trim().split(",");
-        Set<Hastag> hastagSet = new HashSet<>();
+        List<Hastag> hastagSet = new ArrayList<>();
         System.out.println("inputHastag:" +inputHastag);
         boolean checkHastag = true,checkTopic = true;
         // Check độ dài của mỗi hastag min = 1 ,max = 8, tối đa 5 hastag
