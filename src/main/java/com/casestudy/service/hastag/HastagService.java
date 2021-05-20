@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class HastagService implements IHastagService{
     @Autowired
@@ -36,13 +38,24 @@ public class HastagService implements IHastagService{
        return hastagRepository.getTheMostUsedHashtags();
     }
 
+    @Override
     public Hastag saveAndReturn(Hastag hastag){
         return hastagRepository.save(hastag);
     }
 
+    @Override
+    public Iterable<Hastag> getHastagByTopicId(Long topicId) {
+        return hastagRepository.getHastagByTopicId(topicId);
+    }
+
+    public Iterable<Hastag> getHastagByTopicId1(Long topicId) {
+        return (Set<Hastag>) hastagRepository.getHastagByTopicId(topicId);
+    }
+
     public static void main(String[] args) {
+        System.out.println("a");
         HastagService hastagService = new HastagService();
-        Hastag hastag = hastagService.saveAndReturn(new Hastag("testhastag"));
-        System.out.println(hastag.getHastagId());
+        hastagService.getHastagByTopicId(1l);
+        System.out.println("Test");
     }
 }

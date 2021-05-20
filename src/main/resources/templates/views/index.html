@@ -87,6 +87,14 @@
                                 <a th:href="@{/detail/__${topic.topicId}__}">
                                     <h3 th:text="${topic.title}"></h3>
                                 </a>
+                                <th:block th:each="entry : ${listHastagWithTopicId}">
+                                    <div class="posts__tags tags" th:if="${entry.key} == ${topic.topicId}" >
+                                        <th:block th:each="valueEntry : ${entry.value}">
+                                            <a th:text="${valueEntry.getHastagName()}" href="#" class="bg-3b96ca"></a>
+                                        </th:block>
+                                    </div>
+                                </th:block>
+
                             </div>
                         </div>
                         <div class="posts__category">
@@ -94,12 +102,13 @@
                                 <i th:style="'background-color:'+${topic.getCategory().getColor()} + ';'"></i>
                                 <p th:text="${topic.getCategory().getCateName()}" ></p>
                             </a>
+
                         </div>
                     </div>
                     <div class="posts__section-right">
                         <div class="posts__users">
                             <div>
-                                <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/A.svg" alt="avatar"></a>
+                                <a href="#" class="avatar"><img th:src="@{/}" alt="avatar"></a>
                             </div>
                         </div>
                         <div class="posts__replies">31</div>
