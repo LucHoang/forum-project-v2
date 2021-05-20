@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebMethod;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -38,40 +40,49 @@ public class TopicDetailController {
         }
         return userName;
     }
-
     @GetMapping("/{id}")
     public ModelAndView showDetailTopic(@PathVariable Long id) {
-
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         Optional<Topic> topic = topicService.findById(id);
         Iterable<Reply> reply = replyService.findAllByTopic(topic.get());
         Iterable<Topic> topTopics = topicService.findTopByTopicLike();
         topic.get().setTopicView(topic.get().getTopicView() + 1); // tang moi khi an vao detail topic
         topicService.save(topic.get());
-        if (topic.isPresent()) {
-            ModelAndView modelAndView = new ModelAndView("/views/single-topic");
-            modelAndView.addObject("topic", topic.get());
-            modelAndView.addObject("topTopic", topTopics);
-            modelAndView.addObject("replies", reply);
-            return modelAndView;
-
-        } else {
-            ModelAndView modelAndView = new ModelAndView("/error.404");
-            return modelAndView;
+        ModelAndView modelAndView = new ModelAndView("/views/single-topic");
+        modelAndView.addObject("topic", topic.get());
+        modelAndView.addObject("topTopic", topTopics);
+        modelAndView.addObject("replies", reply);
+        if (userCurrent.isPresent()){
+            modelAndView.addObject("userCurrent", userCurrent.get());
         }
-
+        return modelAndView;
     }
 
-    @PostMapping
-    public ResponseEntity<Reply> createReply(@RequestBody Reply reply,@ModelAttribute("topic") Topic topic) {
+    @PostMapping("/create/{id}")
+    public ResponseEntity<Reply> createReply(@RequestBody Reply reply, @PathVariable Long id) {
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        reply.setTopic(topicService.findById(id).get());
         reply.setUser(userCurrent.get());
-        reply.setTopic(topic);
+        reply.setReplyLike(0L);
+        reply.setReplyDislike(0L);
+        reply.setCommentId(0L);
         reply.setReplyDate(LocalDateTime.now());
         return new ResponseEntity<>(replyService.save(reply), HttpStatus.CREATED);
     }
-
-    @GetMapping
-    public ResponseEntity<Iterable<Reply>> allReply() {
-        return new ResponseEntity<>(replyService.findAll(), HttpStatus.OK);
+    @PostMapping("/reply/{id}")
+    public ResponseEntity<Reply> createNewReply(@RequestBody Reply reply, @PathVariable Long id) {
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        reply.setTopic(topicService.findById(id).get());
+        reply.setUser(userCurrent.get());
+        reply.setReplyLike(0L);
+        reply.setReplyDislike(0L);
+        reply.setCommentId(0L);
+        reply.setReplyDate(LocalDateTime.now());
+        return new ResponseEntity<>(replyService.save(reply), HttpStatus.CREATED);
+    }
+    @GetMapping("/create/{id}")
+    public ResponseEntity<Iterable<Reply>> allReply(@PathVariable Long id) {
+        Optional<Topic> topic = topicService.findById(id);
+        return new ResponseEntity<>(replyService.findAllByTopic(topic.get()),HttpStatus.OK);
     }
 }

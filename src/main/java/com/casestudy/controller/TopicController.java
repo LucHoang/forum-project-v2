@@ -31,6 +31,8 @@ public class TopicController {
 
     @Autowired
     private ICategoryService categoryService;
+    @Autowired
+    private IReplyService replyService;
 
 
     @Autowired
@@ -52,6 +54,7 @@ public class TopicController {
         }
         return userName;
     }
+
 
 
 

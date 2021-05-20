@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "replies")
 public class Reply{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long replyId;
 
     @Size(max = 1000)
