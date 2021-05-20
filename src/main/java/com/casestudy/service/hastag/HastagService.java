@@ -35,4 +35,14 @@ public class HastagService implements IHastagService{
     public Iterable<Hastag> getTheMostUsedHashtags() {
        return hastagRepository.getTheMostUsedHashtags();
     }
+
+    public Hastag saveAndReturn(Hastag hastag){
+        return hastagRepository.save(hastag);
+    }
+
+    public static void main(String[] args) {
+        HastagService hastagService = new HastagService();
+        Hastag hastag = hastagService.saveAndReturn(new Hastag("testhastag"));
+        System.out.println(hastag.getHastagId());
+    }
 }

@@ -40,7 +40,7 @@
                     <img src="/assert/fonts/icons/main/Logo_Forum.svg" alt="logo">
                 </h1>
                 <div class="header__logo-btn" >
-                    <a th:href="@{/}">Unity</a><i class="icon-Arrow_Below"></i>
+                    <a th:href="@{/home}">Unity</a><i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="logo">
                     <ul class="dropdown__catalog">
@@ -205,8 +205,8 @@
                     </div>
                     <div>
                         <ul class="dropdown__catalog">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Badges</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/list-user}">Dashboard</a></li>
+                            <li><a th:href="@{/edit-user/{id}(id=${userCurrent.id})}">Account setting</a></li>
                             <li><a href="#">My Groups</a></li>
                             <li><a href="#">Notifications</a></li>
                             <li><a href="#">Topics</a></li>
@@ -217,8 +217,8 @@
                 </nav>
             </div>
         </div>
-        <div class="header__offset-btn">
-            <a href="create-topic.html"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
+        <div class="header__offset-btn" sec:authorize="isAuthenticated()">
+            <a th:href="@{/create-topic}"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
         </div>
     </div>
 </header>
