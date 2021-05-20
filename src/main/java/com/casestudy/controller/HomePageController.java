@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Pageable;
 
@@ -78,7 +79,7 @@ public class HomePageController {
     }
 
     @GetMapping(value = {"/"})
-    public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable, @CookieValue(value = "setUser", defaultValue = "") String setUser,
+    public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable,  @CookieValue(value = "setUser", defaultValue = "") String setUser,
                                   HttpServletResponse response, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/views/index");
         modelAndView.addObject("categories",categories());
@@ -86,7 +87,7 @@ public class HomePageController {
         modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
         modelAndView.addObject("topics", topicService.findAll(pageable));
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
-        if(userCurrent.isPresent()) {
+        if(userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());
 //        }
 
@@ -127,7 +128,31 @@ public class HomePageController {
             modelAndView.addObject("topics", topicService.findByCategoryCateId(Long.parseLong(id),pageable));
             modelAndView.addObject("categories",categories());
             modelAndView.addObject("hastags",hastags());
+            modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
         }catch (Exception e){  modelAndView = new ModelAndView("/views/404");}
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        if(userCurrent.isPresent()){
+            modelAndView.addObject("userCurrent", userCurrent.get());
+        }
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/get-topic-by-hastag/{id}"})
+    public ModelAndView getListByHastag(@PathVariable String id,@PageableDefault(size = 3, value = 3) Pageable pageable) {
+        ModelAndView modelAndView;
+        try {
+            modelAndView = new ModelAndView("/views/index");
+            modelAndView.addObject("topics", topicService.findTopicByHastagId(Long.parseLong(id),pageable));
+            modelAndView.addObject("categories",categories());
+            modelAndView.addObject("hastags",hastags());
+            modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
+        }catch (Exception e){
+            e.printStackTrace();
+            modelAndView = new ModelAndView("/views/404");}
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        if(userCurrent.isPresent()){
+            modelAndView.addObject("userCurrent", userCurrent.get());
+        }
         return modelAndView;
     }
 
@@ -147,5 +172,24 @@ public class HomePageController {
         modelAndView.addObject("cookieValue", cookie);
         return modelAndView;
     }
+
+    @PostMapping(value = {"/"})
+    public ModelAndView searchTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable,@RequestParam String  searchTopic) {
+        ModelAndView modelAndView = new ModelAndView("/views/index");
+        modelAndView.addObject("categories",categories());
+        modelAndView.addObject("hastags",hastags());
+        modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
+        modelAndView.addObject("topics", topicService.findAll(pageable));
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        Iterable<Topic> topicIterable = topicService.findTopicByTitle(searchTopic,pageable);
+        if(topicIterable.iterator().hasNext()){
+            modelAndView.addObject("topics", topicIterable);
+        }
+        if(userCurrent.isPresent()){
+            modelAndView.addObject("userCurrent", userCurrent.get());
+        }
+        return modelAndView;
+    }
+
 }
 

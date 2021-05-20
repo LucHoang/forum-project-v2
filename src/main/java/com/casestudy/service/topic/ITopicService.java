@@ -13,4 +13,6 @@ public interface ITopicService extends IGeneralService<Topic> {
     Page<Topic> findAllByTitleContaining(String title, Pageable pageable);
     Iterable<Topic> findTopByTopicLike();
     Page<Topic> findByCategoryCateId(Long cateId, Pageable pageable);
+    Page<Topic> findTopicByHastagId(Long hastagId, Pageable pageable);
+    Page<Topic> findTopicByTitle(String title,Pageable pageable);
 }
