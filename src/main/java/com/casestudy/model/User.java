@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Size;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Data
@@ -142,5 +143,15 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getSimpleDate(){
+        try {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String formatDateTime = this.dateCreate.format(format);
+            return formatDateTime;
+        }catch (Exception e){
+            return null;
+        }
     }
 }

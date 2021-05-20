@@ -134,6 +134,7 @@ public class UserController {
                         break;
                     case "ROLE_MEMBER":
                         isMember = true;
+                        break;
                 }
             }
             if (isAdmin) {
@@ -169,13 +170,12 @@ public class UserController {
 
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
-
             String userRole = user.get().getRoles().toString();
             for (Role role: user.get().getRoles()) {
-                if (role.getName().equals("ROLE_SUS")) {
-                    userRole = "ROLE_SUS";
-                    break;
-                }
+//                if (role.getName().equals("ROLE_SUS")) {
+//                    userRole = "ROLE_SUS";
+//                    break;
+//                }
                 userRole = role.getName();
             }
 
@@ -249,7 +249,7 @@ public class UserController {
                 userRole.add(new Role(2L, "ROLE_MEMBER"));
             } else {
                 userRole.add(new Role(5L, "ROLE_SUS"));
-                userRole.add(new Role(2L, "ROLE_MEMBER"));
+//                userRole.add(new Role(2L, "ROLE_MEMBER"));
             }
 
             roles.addAll(userRole);

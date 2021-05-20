@@ -74,4 +74,11 @@ public class SecurityController {
         return "redirect:cities";
     }
 
+    @GetMapping( "/login")
+    public ModelAndView signIn() {
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+//        model.addAttribute("user", getPrincipal());
+//        ModelAndView modelAndView = new ModelAndView("/signIn");
+        return new ModelAndView("signIn");
+    }
 }
