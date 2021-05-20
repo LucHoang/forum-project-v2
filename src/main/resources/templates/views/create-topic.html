@@ -78,8 +78,8 @@
                 </div>
                 <div th:switch="${checkHastag}" class="create__section">
                     <ul th:case="false" style="color: red">
-                        <li th:text="Please enter no more than 5 tags. !"></li>
-                        <li th:text="The tag is too long, the maximum length is 8 characters." ></li>
+                        <li>Please enter no more than 5 tags. !</li>
+                        <li>The tag is too long, the maximum length is 8 characters.</li>
                     </ul>
                 </div>
                 <div class="create__footer">
