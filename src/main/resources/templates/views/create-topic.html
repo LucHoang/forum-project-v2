@@ -18,8 +18,8 @@
         <div class="container">
             <div class="create">
                 <div class="create__head">
-                    <div class="create__title"><img src="fonts/icons/main/New_Topic.svg" alt="New topic">Create New
-                        Thread
+                    <div class="create__title"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New topic">Create New
+                        Topic
                     </div>
                     <span>Forum Guidelines</span>
                 </div>
@@ -34,23 +34,12 @@
                             <label class="custom-select">
                                 <select id="category" th:field="*{category}">
                                     <option th:each="category : ${categories}" th:value="${category.cateId}"
-                                            th:text="${category.cateName}"></option>
+                                            th:text="${category.cateName}">
+                                    </option>
                                 </select>
                             </label>
                         </div>
                     </div>
-<!--                    <div class="col-md-6">-->
-<!--                        <div class="create__section">-->
-<!--                            <label class="create__label" for="sub-category">Select Sub Category</label>-->
-<!--                            <label class="custom-select">-->
-<!--                                <select id="sub-category">-->
-<!--                                    <option>Choose</option>-->
-<!--                                    <option>Choose #2</option>-->
-<!--                                    <option>Choose #3</option>-->
-<!--                                </select>-->
-<!--                            </label>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
                 <div class="create__section create__textarea">
                     <label class="create__label" for="description">Description</label>
@@ -77,85 +66,21 @@
                     <textarea class="form-control" id="description" th:field="*{content}">Adding amazing books to your summer reading list can be as simple as signing up for the BuzzFeed Books newsletter! You'll get a review of a new book you might love every Wednesday, plus much more twice a week: great jokes and quizzes, wonderful lists, powerful essays, all the Harry Potter and YA buzz you can handle, and of course, even more book recommendations. So make some space in your beach bag now — because you're going to have a lot to read this summer.</textarea>
                 </div>
                 <div class="create__section">
-                    <label class="create__label" for="tags">Add Tags</label>
-                    <input type="text" th:field="*{hastags}" class="form-control" id="tags" placeholder="e.g. nature, science">
+                    <label class="create__label" >Add Tags</label>
+<!--                    <input type="text" th:field="*{hastags}" class="form-control" id="tags" placeholder="e.g. nature, science">-->
+                    <div class="simple-tags"
+                         data-simple-tags=""
+                         style="margin: 1em 0em;"></div>
+                    <input type="hidden" value="" id="data-input" name="inputHastag">
                 </div>
-<!--                <div class="create__advanced">-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-lg-4 col-xl-4">-->
-<!--                            <div class="create__section">-->
-<!--                                <label class="create__label">Who can see this?</label>-->
-<!--                                <div class="create__radio">-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-radio">-->
-<!--                                            <input type="radio" name="can-see" checked="checked">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <span>Everyone</span>-->
-<!--                                    </label>-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-radio">-->
-<!--                                            <input type="radio" name="can-see">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <span>Only Friends</span>-->
-<!--                                    </label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-4 col-xl-3">-->
-<!--                            <div class="create__section">-->
-<!--                                <label class="create__label">Share on Social?</label>-->
-<!--                                <div class="create__radio">-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-checkbox">-->
-<!--                                            <input type="checkbox" name="share-social" checked="checked">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <i class="fa fa-facebook-square" aria-hidden="true"></i>-->
-<!--                                    </label>-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-checkbox">-->
-<!--                                            <input type="checkbox" name="share-social" checked="checked">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <i class="fa fa-twitter" aria-hidden="true"></i>-->
-<!--                                    </label>-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-checkbox">-->
-<!--                                            <input type="checkbox" name="share-social">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <i class="fa fa-google-plus" aria-hidden="true"></i>-->
-<!--                                    </label>-->
-<!--                                </div>-->
-                            </div>
-                        </div>
-<!--                        <div class="col-lg-4 col-xl-5">-->
-<!--                            <div class="create__section">-->
-<!--                                <label class="create__label">Is this a Mature Thread?</label>-->
-<!--                                <div class="create__radio">-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-radio">-->
-<!--                                            <input type="radio" name="mature-thread">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <span>Yes</span>-->
-<!--                                    </label>-->
-<!--                                    <label class="create__box">-->
-<!--                                        <label class="custom-radio">-->
-<!--                                            <input type="radio" name="mature-thread" checked="checked">-->
-<!--                                            <i></i>-->
-<!--                                        </label>-->
-<!--                                        <span>No</span>-->
-<!--                                    </label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                    </div>
-                    <th:block th:if="${message}">
-                        <p th:text="${message}"></p>
-                    </th:block>
+                <div th:switch="${checkTopic}" class="create__section">
+                    <p th:case="true" style="color: green">New topic created successfully !</p>
+                </div>
+                <div th:switch="${checkHastag}" class="create__section">
+                    <ul th:case="false" style="color: red">
+                        <li th:text="Please enter no more than 5 tags. !"></li>
+                        <li th:text="The tag is too long, the maximum length is 8 characters." ></li>
+                    </ul>
                 </div>
                 <div class="create__footer">
                     <a href="#" class="create__btn-cansel btn">Cancel</a>

@@ -59,4 +59,8 @@ public class TopicService implements ITopicService {
         topicRepository.deleteById(id);
     }
 
+    @Override
+    public Page<Topic> findByCategoryCateId(Long cateId, Pageable pageable) {
+        return topicRepository.findByCategoryCateId(cateId,pageable);
+    }
 }
