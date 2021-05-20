@@ -101,9 +101,17 @@ public class HomePageController {
         }catch (Exception e){  modelAndView = new ModelAndView("/views/404");}
         return modelAndView;
     }
+
     @GetMapping(value = {"/login"})
     public ModelAndView test() {
-        ModelAndView modelAndView = new ModelAndView("/views/404");
+        ModelAndView modelAndView = new ModelAndView("/views/signin");
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/login_error"})
+    public ModelAndView loginError() {
+        ModelAndView modelAndView = new ModelAndView("/views/signin");
+        modelAndView.addObject("error", "Incorrect username or password !!!");
         return modelAndView;
     }
 }

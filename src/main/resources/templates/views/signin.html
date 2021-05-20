@@ -4,6 +4,8 @@
 <!------ Include the above in your HEAD tag ---------->
 
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html>
 <head>
   <title>Login Page</title>
@@ -24,7 +26,8 @@
   @import url('https://fonts.googleapis.com/css?family=Numans');
 
   html,body{
-    background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
+    /*background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');*/
+    background-image: url('https://user-images.githubusercontent.com/76985354/118941355-d3c5be80-b97b-11eb-9f34-13e867f44282.png');
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
@@ -123,20 +126,25 @@
           <span><i class="fab fa-twitter-square"></i></span>
         </div>
       </div>
+      <div class="notify" style="text-align: center; color: red">
+        <div th:if="${error}">
+          <span th:text="${error}"></span>
+        </div>
+      </div>
       <div class="card-body">
-        <form>
+        <form th:action="@{/login}" method="post">
           <div class="input-group form-group">
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-user"></i></span>
             </div>
-            <input type="text" class="form-control" placeholder="username">
+            <input type="text" name="username" class="form-control" placeholder="username" required="">
 
           </div>
           <div class="input-group form-group">
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            <input type="password" class="form-control" placeholder="password">
+            <input type="password" name="password" class="form-control" placeholder="password" required="">
           </div>
           <div class="row align-items-center remember">
             <input type="checkbox">Remember Me
@@ -148,7 +156,7 @@
       </div>
       <div class="card-footer">
         <div class="d-flex justify-content-center links">
-          Don't have an account?<a href="#">Sign Up</a>
+          Don't have an account?<a th:href="@{/create-user}">Sign Up</a>
         </div>
         <div class="d-flex justify-content-center">
           <a href="#">Forgot your password?</a>

@@ -32,29 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService((UserDetailsService) appUserService).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
-//    @Override
-//    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder
-//                .userDetailsService(appUserService)
-//                .passwordEncoder(NoOpPasswordEncoder.getInstance());
-//    }
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//    @Override
-//    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder());
-//    }
-//@Autowired
-//AuthenticationSuccessHandler authenticationSuccessHandler;
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -64,22 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**", "/list-user/**", "/delete-user/**").access("hasRole('ADMIN')")
                 .antMatchers("/dba/**").access("hasRole('ADMIN') and hasRole('DBA')")
                 .and().formLogin()
-//                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-
-//                .logoutSuccessHandler(new CustomSuccessHandler());
-                .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .failureUrl("/login?error=true")
+                .failureUrl("/login_error")
+//                .failureUrl("/login?error=true")
                 .successHandler(new CustomSuccessHandler())
-                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .and().exceptionHandling().accessDeniedPage("/accessDenied");
         http.csrf().disable();
         http.authorizeRequests();
+
+        http.logout().logoutSuccessUrl("/");
 //                .rememberMe().tokenRepository(this.persistentTokenRepository()) //
 //                .tokenValiditySeconds(1 * 24 * 60 * 60);
-
 
 
 //                .successHandler(new CustomSuccessHandler())
@@ -87,10 +62,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and().csrf()
 //                .and().exceptionHandling().accessDeniedPage("/accessDenied");
     }
-
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/resources/**");
-//    }
-
 }
