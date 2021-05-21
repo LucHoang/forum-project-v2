@@ -31,8 +31,20 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    compile('org.springframework.boot:spring-boot-starter-mail')
+//    testImplementation 'org.springframework.security:spring-security-test'
+//    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //SECURITY
+//    compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.4.2'
+//
+//    compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.4.2'
+//
+//    compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: '5.4.2'
+//
+//    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
+//    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.3'
+//    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+
 
 }
 
