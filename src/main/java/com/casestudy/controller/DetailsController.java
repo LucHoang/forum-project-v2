@@ -116,7 +116,7 @@ public class DetailsController {
     public ModelAndView editTopic(@Validated @ModelAttribute("topic") Topic topic, @RequestParam String inputHastag, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView("/views/edit-topic");
         String[] arrayHastag = inputHastag.trim().split(",");
-        Set<Hastag> hastagSet = new HashSet<>();
+        List<Hastag> hastagList = new ArrayList<>();
         System.out.println("inputHastag:" +inputHastag);
         boolean checkHastag = true,checkTopic = true;
         // Check độ dài của mỗi hastag min = 1 ,max = 8, tối đa 5 hastag
@@ -131,12 +131,12 @@ public class DetailsController {
         for (int i = 0; i < arrayHastag.length; i++) {
             try {
                 Hastag hastag = hastagService.saveAndReturn(new Hastag(arrayHastag[1]));
-                hastagSet.add(hastag);
+                hastagList.add(hastag);
             }catch (Exception e){ checkHastag = false; checkTopic = false; break; }
         }
         // Insert topic mới
         if(checkTopic){
-            topic.setHastags(hastagSet);
+            topic.setHastags(hastagList);
             topic.setTopicDate(LocalDateTime.now());
             topicService.save(topic);
         }

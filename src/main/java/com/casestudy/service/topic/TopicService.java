@@ -1,20 +1,16 @@
 package com.casestudy.service.topic;
 
 import com.casestudy.model.Category;
-import com.casestudy.model.Hastag;
 import com.casestudy.model.Topic;
 import com.casestudy.model.User;
 import com.casestudy.repository.ITopicRepository;
-import com.casestudy.service.topic.ITopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TopicService implements ITopicService {
@@ -30,6 +26,11 @@ public class TopicService implements ITopicService {
     public Page<Topic> findAll(Pageable pageable) {
         return topicRepository.findAll(pageable);
     }
+
+    public Iterable<Topic> findAllWithoutPage() {
+        return topicRepository.findAll();
+    }
+
 
     @Override
     public Page<Topic> findAllByTitleContaining(String title, Pageable pageable) {
@@ -70,5 +71,15 @@ public class TopicService implements ITopicService {
     @Override
     public Page<Topic> findByUserId(Long id, Pageable pageable) {
         return topicRepository.findAllByUserId(id,pageable);
+    }
+
+    @Override
+    public Page<Topic> findTopicByHastagId(Long hastagId,Pageable pageable) {
+        return topicRepository.findTopicByHastagId(hastagId,pageable);
+    }
+
+    @Override
+    public Page<Topic> findTopicByTitle(String title,Pageable pageable) {
+        return topicRepository.findTopicByTitleContains(title,pageable);
     }
 }

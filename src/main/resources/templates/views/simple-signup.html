@@ -11,8 +11,8 @@
     <header class="signup__header">
         <div class="container">
             <div class="signup__header-content">
-                <p><a href="#">Already have an account?</a></p>
-                <a th:href="@{/home}" class="btn">Sign In</a>
+                <p><a th:href="@{/home}" th:text="#{already_have_an_account}">Already have an account?</a></p>
+                <a th:href="@{/home}" class="btn" th:text="#{sign_in}">Sign In</a>
             </div>
         </div>
     </header>
@@ -24,12 +24,12 @@
         <div class="container">
             <div class="signup__container">
                 <div class="signup__logo">
-                    <a href="#"><img src="/assert/fonts/icons/main/Logo_Forum.svg" alt="logo">Unity</a>
+                    <a th:href="@{/}"><img src="/assert/fonts/icons/main/Logo_Forum.svg" alt="logo">Unity</a>
                 </div>
 
                 <div class="signup__head">
-                    <h3>Create a New Unity Account</h3>
-                    <p>By singin up you can start posting, replaying to topics, earn badges, favorite, vote topics and many more.</p>
+                    <h3 th:text="#{create_a_New_Unity_Account}">Create a New Unity Account</h3>
+                    <p th:text="#{by_singin_up_you}">By singin up you can start posting, replaying to topics, earn badges, favorite, vote topics and many more.</p>
                 </div>
 
                 <form class="form-horizontal" th:action="@{/create-user}" th:object="${user}"
@@ -51,7 +51,7 @@
                     <div class="row" data-visible="desktop">
                         <div class="col-md-12">
                             <div class="signup__section">
-                                <label class="signup__label" for="first-name">Full Name</label>
+                                <label class="signup__label" for="first-name" th:text="#{full_Name}">Full Name</label>
                                 <input name="fullName" required="" type="text" class="form-control" id="first-name" value="Jane" th:field="*{fullName}">
                                 <span style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name Error</span>
                             </div>
@@ -64,16 +64,17 @@
 <!--                        </div>-->
                     </div>
                     <div class="signup__section">
-                        <label class="signup__label" for="username">Username</label>
+                        <label class="signup__label" for="username" th:text="#{username}">Username</label>
                         <input name="username" required="" type="text" class="form-control" id="username" value="Janeunity9" th:field="*{username}">
                         <span style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</span>
                     </div>
-<!--                    <div class="signup__section">-->
-<!--                        <label class="signup__label" for="email">Emain Address</label>-->
-<!--                        <input type="text" class="form-control" id="email" value="Jane326@gmail.com" th:field="*{email}">-->
-<!--                    </div>-->
                     <div class="signup__section">
-                        <label class="signup__label" for="password">Password</label>
+                        <label class="signup__label" for="email" th:text="#{email_Address}">Email Address</label>
+                        <input type="text" class="form-control" id="email" value="Jane326@gmail.com" th:field="*{email}" required="">
+                        <span style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</span>
+                    </div>
+                    <div class="signup__section">
+                        <label class="signup__label" for="password" th:text="#{password}">Password</label>
                         <div class="message-input">
                             <input name="password" required="" type="password" class="form-control" id="password" value="*********" th:field="*{password}">
                             <span style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</span>
@@ -83,7 +84,7 @@
 
                     <!-- File Button -->
                     <div class="signup__section">
-                        <label class="signup__label" for="username">Avatar</label>
+                        <label class="signup__label" for="username" th:text="#{avatar}">Avatar</label>
                         <div class="message-input">
                             <input id="email" name="avatar" class="form-control" type="file" th:field="*{avatar}">
                         </div>
@@ -111,7 +112,7 @@
 <!--                        </div>-->
 <!--                    </div>-->
 <!--                    <a href="#" class="signup__btn-create btn btn&#45;&#45;type-02">Create New Account</a>-->
-                    <button class="signup__btn-create btn btn--type-02">Create New Account</button>
+                    <button class="signup__btn-create btn btn--type-02" th:text="#{create_New_Account}">Create New Account</button>
                 </div>
                 </form>
             </div>
@@ -123,9 +124,9 @@
         <div class="container">
             <div class="signup__footer-content">
                 <ul class="signup__footer-menu">
-                    <li><a href="#">Teams</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Send Feedback</a></li>
+                    <li><a href="#" th:text="#{teams}">Teams</a></li>
+                    <li><a href="#" th:text="#{privacy}">Privacy</a></li>
+                    <li><a href="#" th:text="#{send_feedback}">Send Feedback</a></li>
                 </ul>
                 <ul class="signup__footer-social">
                     <li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>

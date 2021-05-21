@@ -79,9 +79,9 @@ public class UserController {
         // Creating user's account
         User user;
         if (fileName.equals("")) {
-            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName());
+            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), userRequest.getEmail());
         } else {
-            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), fileName);
+            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), userRequest.getEmail(),fileName);
         }
 
 //        Set<String> strRoles = signUpRequest.getRoles();
@@ -134,6 +134,7 @@ public class UserController {
                         break;
                     case "ROLE_MEMBER":
                         isMember = true;
+                        break;
                 }
             }
             if (isAdmin) {
@@ -169,13 +170,12 @@ public class UserController {
 
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
-
             String userRole = user.get().getRoles().toString();
             for (Role role: user.get().getRoles()) {
-                if (role.getName().equals("ROLE_SUS")) {
-                    userRole = "ROLE_SUS";
-                    break;
-                }
+//                if (role.getName().equals("ROLE_SUS")) {
+//                    userRole = "ROLE_SUS";
+//                    break;
+//                }
                 userRole = role.getName();
             }
 
@@ -231,7 +231,7 @@ public class UserController {
         }
 
         User user = new User(userRequest.getId(),userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), fileName,
-                userRequest.getLevel(), userRequest.getDateCreate());
+                userRequest.getLevel(), userRequest.getDateCreate(), userRequest.getEmail());
 
 
         if (roleText.isPresent()) {
@@ -249,7 +249,7 @@ public class UserController {
                 userRole.add(new Role(2L, "ROLE_MEMBER"));
             } else {
                 userRole.add(new Role(5L, "ROLE_SUS"));
-                userRole.add(new Role(2L, "ROLE_MEMBER"));
+//                userRole.add(new Role(2L, "ROLE_MEMBER"));
             }
 
             roles.addAll(userRole);

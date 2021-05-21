@@ -7,7 +7,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,7 +44,7 @@ public class Topic {
     @JoinTable(name = "topics_hastag" ,
             joinColumns = @JoinColumn(name = "topicId"),
             inverseJoinColumns = @JoinColumn(name = "hastagId"))
-    private Set<Hastag> hastags = new HashSet<>();
+    private List<Hastag> hastags = new ArrayList<>();
 
     @ManyToOne
     private User user;
@@ -55,7 +57,7 @@ public class Topic {
         this.user = user;
     }
 
-    public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Long topicView, Category category, Set<Hastag> hastags, User user) {
+    public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Long topicView, Category category, List<Hastag> hastags, User user) {
         this.topicId = topicId;
         this.title = title;
         this.content = content;
@@ -133,19 +135,19 @@ public class Topic {
         this.category = category;
     }
 
-    public Set<Hastag> getRoles() {
+    public List<Hastag> getRoles() {
         return hastags;
     }
 
-    public void setRoles(Set<Hastag> roles) {
+    public void setRoles(List<Hastag> roles) {
         this.hastags = roles;
     }
 
-    public Set<Hastag> getHastags() {
+    public List<Hastag> getHastags() {
         return hastags;
     }
 
-    public void setHastags(Set<Hastag> hastags) {
+    public void setHastags(List<Hastag> hastags) {
         this.hastags = hastags;
     }
 

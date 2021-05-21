@@ -2782,7 +2782,7 @@ select {
     width: 600px;
     padding-left: 30px;
     padding-right: 30px;
-    border-right: solid 1px #e9ecee;
+    border-right: solid 1px white;
   }
 }
 @media only screen and (max-width: 1039px) {

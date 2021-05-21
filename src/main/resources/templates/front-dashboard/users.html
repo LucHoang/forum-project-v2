@@ -224,6 +224,7 @@ $(document).ready(function(){
                         <th>Avatar</th>
                         <th>User Name</th>
                         <th>Full Name</th>
+                        <th>Email</th>
                         <th>Date Created</th>
                         <th>Role</th>
                         <th>Level</th>
@@ -245,7 +246,8 @@ $(document).ready(function(){
 <!--                            <span th:text="${row.username}"></span>-->
                         </td>
                         <td th:text="${row.fullName}"></td>
-                        <td th:text="${row.dateCreate}"></td>
+                        <td th:text="${row.email}"></td>
+                        <td th:text="${row.simpleDate}"></td>
                         <td th:text="${listUser.get(row.id)}"></td>
                         <td th:text="${row.level}"></td>
 <!--                        <td><span class="status text-success">&bull;</span> Active</td>-->
