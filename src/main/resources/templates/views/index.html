@@ -99,7 +99,9 @@
                     <div class="posts__section-right">
                         <div class="posts__users">
                             <div>
-                                <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/A.svg" alt="avatar"></a>
+                                <a th:href="@{/detail-user/__${topic.user.id}__}" class="avatar">
+                                    <img th:src="@{'/assert/img/' + ${topic.getUser().getAvatar()}}"  alt="avatar"></a>
+<!--                                <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/A.svg" alt="avatar"></a>-->
                             </div>
                         </div>
                         <div class="posts__replies">31</div>

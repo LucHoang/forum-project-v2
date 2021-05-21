@@ -8,16 +8,18 @@ import com.casestudy.service.user.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Controller
 public class DetailsController {
@@ -31,7 +33,6 @@ public class DetailsController {
     private HastagService hastagService;
     @Autowired
     private AppUserService userService;
-    @GetMapping("/detail-user/about")
 
     private String getPrincipal() {
         String userName = null;
@@ -44,46 +45,119 @@ public class DetailsController {
         }
         return userName;
     }
-    @ModelAttribute("userCurrent")
-    public User userOptional(){
-        return userService.findByUsername(getPrincipal()).get();
-    }
-
 
 
     @ModelAttribute
-    private List<Category> categories(){
+    private List<Category> categories() {
         List<Category> categories = new ArrayList<>();
         categoryService.findAll().forEach(categories::add);
         return categories;
     }
+
     @ModelAttribute
-    private List<Hastag> hastags(){
+    private List<Hastag> hastags() {
         List<Hastag> hastags = new ArrayList<>();
         hastagService.getTheMostUsedHashtags().forEach(hastags::add);
         return hastags;
     }
 
-    @GetMapping("/detail-user")
-    public ModelAndView showProfile() {
-        ModelAndView modelAndView = new ModelAndView("/views/profile-about");
+    @GetMapping("/detail-user/{id}")
+    public ModelAndView showProfileUser(@PathVariable Long id) {
+        ModelAndView modelAndView;
+        modelAndView = new ModelAndView("/views/profile-about");
+        Optional<User> user = userService.findById(id);
+        modelAndView.addObject("user", user.get());
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        if (userCurrent.isPresent()) {
+            modelAndView.addObject("userCurrent", userCurrent.get());
+        }
         return modelAndView;
     }
 
-    @GetMapping("/detail-user/topic")
-    public ModelAndView showTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable) {
+    @GetMapping("/detail-user/topic/{id}")
+    public ModelAndView showTopic(@PathVariable Long id, @PageableDefault(sort = {"title"}, value = 3) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("/views/profile-topic");
+        modelAndView.addObject("topic", new Topic());
+        Optional<User> user = userService.findById(id);
+        modelAndView.addObject("user", user.get());
+        modelAndView.addObject("topics", topicService.findByUserId(id, pageable));
+        modelAndView.addObject("categories", categories());
+        modelAndView.addObject("hastags", hastags());
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        if (userCurrent.isPresent()) {
+            modelAndView.addObject("userCurrent", userCurrent.get());
+        }
+        return modelAndView;
+    }
+
+
+    @GetMapping("/edit-topic/{id}")
+    public ModelAndView showEditTopic(@PathVariable Long id) {
+        Optional<Topic> topic = topicService.findById(id);
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+
+        if (topic.isPresent()) {
+            ModelAndView modelAndView = new ModelAndView("/views/edit-topic");
+            if (userCurrent.isPresent()) {
+                modelAndView.addObject("userCurrent", userCurrent.get());
+            }
+            modelAndView.addObject("topic", topic.get());
+            modelAndView.addObject("categories", categories());
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/views/404");
+            return modelAndView;
+        }
+
+    }
+
+
+    @PostMapping("/edit-topic")
+    public ModelAndView editTopic(@Validated @ModelAttribute("topic") Topic topic, @RequestParam String inputHastag, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView("/views/edit-topic");
+        String[] arrayHastag = inputHastag.trim().split(",");
+        Set<Hastag> hastagSet = new HashSet<>();
+        System.out.println("inputHastag:" +inputHastag);
+        boolean checkHastag = true,checkTopic = true;
+        // Check độ dài của mỗi hastag min = 1 ,max = 8, tối đa 5 hastag
+        for (int i = 0; i < arrayHastag.length; i++) {
+            if(arrayHastag[i].length() <1 || arrayHastag.length>8 || arrayHastag.length > 5){
+                checkHastag = false;
+                checkTopic = false;
+                break;
+            }
+        }
+        // Insert hastag mới
+        for (int i = 0; i < arrayHastag.length; i++) {
+            try {
+                Hastag hastag = hastagService.saveAndReturn(new Hastag(arrayHastag[1]));
+                hastagSet.add(hastag);
+            }catch (Exception e){ checkHastag = false; checkTopic = false; break; }
+        }
+        // Insert topic mới
+        if(checkTopic){
+            topic.setHastags(hastagSet);
+            topic.setTopicDate(LocalDateTime.now());
+            topicService.save(topic);
+        }
+
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         modelAndView.addObject("userCurrent",userCurrent.get());
         modelAndView.addObject("topic", new Topic());
-        modelAndView.addObject("topics", topicService.findAll(pageable));
-        modelAndView.addObject("categories",categories());
-        modelAndView.addObject("hastags",hastags());
+        modelAndView.addObject("checkTopic", checkTopic);
+        modelAndView.addObject("checkHastag", checkHastag);
         return modelAndView;
     }
 
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Topic> deleteTopic(@PathVariable Long id) {
+        Optional<Topic> topic = topicService.findById(id);
+        if (!topic.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        topicService.remove(id);
+        return new ResponseEntity<>(topic.get(), HttpStatus.NO_CONTENT);
+    }
 
 
 }

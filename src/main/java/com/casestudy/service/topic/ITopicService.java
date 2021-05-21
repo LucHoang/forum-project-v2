@@ -2,6 +2,7 @@ package com.casestudy.service.topic;
 
 import com.casestudy.model.Category;
 import com.casestudy.model.Topic;
+import com.casestudy.model.User;
 import com.casestudy.service.IGeneralService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,5 @@ public interface ITopicService extends IGeneralService<Topic> {
     Page<Topic> findAllByTitleContaining(String title, Pageable pageable);
     Iterable<Topic> findTopByTopicLike();
     Page<Topic> findByCategoryCateId(Long cateId, Pageable pageable);
+    Page<Topic> findByUserId(Long id, Pageable pageable);
 }
