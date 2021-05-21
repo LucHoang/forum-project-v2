@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -22,6 +23,10 @@ public class UserForm {
     private Set<Role> roles;
     private LocalDateTime dateCreate = LocalDateTime.now();
 
+    @Email
+    @NotBlank
+    private String email;
+
     public UserForm() {
     }
 
@@ -34,6 +39,14 @@ public class UserForm {
         this.level = level;
         this.roles = roles;
         this.dateCreate = dateCreate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getId() {

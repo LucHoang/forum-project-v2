@@ -79,9 +79,9 @@ public class UserController {
         // Creating user's account
         User user;
         if (fileName.equals("")) {
-            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName());
+            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), userRequest.getEmail());
         } else {
-            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), fileName);
+            user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), userRequest.getEmail(),fileName);
         }
 
 //        Set<String> strRoles = signUpRequest.getRoles();
@@ -231,7 +231,7 @@ public class UserController {
         }
 
         User user = new User(userRequest.getId(),userRequest.getUsername(), userRequest.getPassword(), userRequest.getFullName(), fileName,
-                userRequest.getLevel(), userRequest.getDateCreate());
+                userRequest.getLevel(), userRequest.getDateCreate(), userRequest.getEmail());
 
 
         if (roleText.isPresent()) {
