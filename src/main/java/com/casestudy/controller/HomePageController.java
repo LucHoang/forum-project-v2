@@ -170,14 +170,10 @@ public class HomePageController {
         modelAndView.addObject("categories",categories());
         modelAndView.addObject("hastags",hastags());
         modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
-        modelAndView.addObject("topics", topicService.findAll(pageable));
+        modelAndView.addObject("topics", topicService.findTopicByTitle(searchTopic,pageable));
         modelAndView.addObject("valueForPagination", new String[]{"searchpage",""});
         modelAndView.addObject("searchTopic",searchTopic);
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
-        Iterable<Topic> topicIterable = topicService.findTopicByTitle(searchTopic,pageable);
-        if(topicIterable.iterator().hasNext()){
-            modelAndView.addObject("topics", topicIterable);
-        }
         if(userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());
         }
