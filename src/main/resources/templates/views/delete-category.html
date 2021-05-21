@@ -16,7 +16,7 @@
     <div class="container">
         <div class="create">
             <div class="create__head">
-                <div class="create__title"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New topic">Create Category</div>
+                <div class="create__title"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New topic">Delete Category</div>
             </div>
             <div th:if="${error}" style="color: red">
                 <span th:text="${error}"></span>
@@ -24,33 +24,33 @@
             <div th:if="${message}" style="color: green">
                 <span th:text="${message}"></span>
             </div>
-            <form th:action="@{/create-or-update-cate}" method="post" th:object="${category}">
+            <form th:action="@{/delete-cate}" method="post" th:object="${category}">
                 <input type="hidden" th:field="*{cateId}">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="create__section">
                             <label class="create__label" for="CategoryName">Category Name</label>
-                            <input type="text" class="form-control" id="CategoryName" placeholder="Add here" th:field="*{cateName}" required="">
+                            <input type="text" class="form-control" id="CategoryName" placeholder="Add here" th:field="*{cateName}" required="" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="create__section">
-                            <label class="create__label" for="CategoryColor">Select color of category</label>
-                            <input type="color" class="form-control" id="CategoryColor" placeholder="Add here" th:field="*{color}">
+                            <label class="create__label" for="CategoryColor">Color of category</label>
+                            <input type="color" class="form-control" id="CategoryColor" placeholder="Add here" th:field="*{color}" readonly>
                         </div>
                     </div>
                 </div>
-<!--                <div class="create__section">-->
-<!--                    <p th:text="${message}" style="color: green"></p>-->
-<!--&lt;!&ndash;                    <label class="create__label" for="tags">Add Tags</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <input type="text" class="form-control" id="tags" placeholder="e.g. nature, science">&ndash;&gt;-->
-<!--                </div>-->
+                <!--                <div class="create__section">-->
+                <!--                    <p th:text="${message}" style="color: green"></p>-->
+                <!--&lt;!&ndash;                    <label class="create__label" for="tags">Add Tags</label>&ndash;&gt;-->
+                <!--&lt;!&ndash;                    <input type="text" class="form-control" id="tags" placeholder="e.g. nature, science">&ndash;&gt;-->
+                <!--                </div>-->
 
                 <div class="create__footer">
                     <a th:href="@{/categories}" class="create__btn-cansel btn">Cancel</a>
-                    <button type="submit" class="create__btn-create btn btn--type-02">Create category</button>
+                    <button type="submit" class="create__btn-create btn btn--type-02">Delete category</button>
                 </div>
             </form>
         </div>
