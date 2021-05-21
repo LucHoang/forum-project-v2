@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html lang="en-US">
 <head th:replace="/views/layout :: head">
 
@@ -86,6 +87,7 @@
                 <div class="posts__replies" th:text="#{replies}">Replies</div>
                 <div class="posts__views" th:text="#{views}">Views</div>
                 <div class="posts__activity" th:text="#{date}">Date</div>
+<!--                <div class="posts__activity" th:text="#{action}">Action</div>-->
             </div>
             <div class="posts__body">
                 <div th:each="topic :${topics}" class="posts__item bg-f2f4f6">
@@ -103,6 +105,30 @@
                                     </div>
                                 </th:block>
 
+                                <div sec:authorize="hasRole('ADMIN')">
+                                                <span>
+                                                   <a th:href="@{/edit-topic/__${topic.topicId}__}">
+                                                       <img src="/assert/fonts/icons/avatars/icons8-edit.svg"
+                                                            alt="edit" width="20" height="20">
+                                                   </a>
+                                                    <a th:href="@{/delete-topic-post/__${topic.topicId}__}">
+                                                        <img src="/assert/fonts/icons/avatars/icons8-remove.svg"
+                                                             alt="remove" width="20" height="20">
+                                                    </a>
+                                                </span>
+                                </div>
+                                <div sec:authorize="hasRole('MOD')">
+                                                <span>
+                                                   <a th:href="@{/edit-topic/__${topic.topicId}__}">
+                                                       <img src="/assert/fonts/icons/avatars/icons8-edit.svg"
+                                                            alt="edit" width="20" height="20">
+                                                   </a>
+                                                    <a th:href="@{/delete-topic-post/__${topic.topicId}__}">
+                                                        <img src="/assert/fonts/icons/avatars/icons8-remove.svg"
+                                                             alt="remove" width="20" height="20">
+                                                    </a>
+                                                </span>
+                                </div>
                             </div>
                         </div>
                         <div class="posts__category">

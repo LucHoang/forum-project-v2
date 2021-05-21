@@ -159,5 +159,25 @@ public class DetailsController {
         return new ResponseEntity<>(topic.get(), HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/delete-topic-post/{id}")
+    public ModelAndView showDeleteForm(@PathVariable Long id) {
+        Optional<Topic> topic = topicService.findById(id);
+//        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        if (topic.isPresent()) {
+            ModelAndView modelAndView = new ModelAndView("/views/delete-topic");
+            modelAndView.addObject("topic", topic.get());
+            modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
+            return modelAndView;
 
+        } else {
+            ModelAndView modelAndView = new ModelAndView("views/404");
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/delete-topic-post")
+    public String deleteCity(@ModelAttribute("topic") Topic topic) {
+        topicService.remove(topic.getTopicId());
+        return "redirect:/";
+    }
 }

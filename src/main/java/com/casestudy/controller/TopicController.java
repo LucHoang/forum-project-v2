@@ -76,7 +76,7 @@ public class TopicController {
         boolean checkHastag = true,checkTopic = true;
         // Check độ dài của mỗi hastag min = 1 ,max = 8, tối đa 5 hastag
         for (int i = 0; i < arrayHastag.length; i++) {
-            if(arrayHastag[i].length() <1 || arrayHastag.length>8 || arrayHastag.length > 5){
+            if(arrayHastag[i].length() <1 || arrayHastag[i].length()>8 || arrayHastag.length > 5){
                 checkHastag = false;
                 checkTopic = false;
                 break;

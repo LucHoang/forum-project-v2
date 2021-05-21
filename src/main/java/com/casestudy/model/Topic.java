@@ -20,7 +20,7 @@ public class Topic {
     private Long topicId;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 200)
     private String title;
 
     @NotBlank
@@ -35,6 +35,7 @@ public class Topic {
 
     private Long topicStatus;
 
+    @Column(columnDefinition = "BIGINT default 0")
     private Long topicView;
 
     @ManyToOne
@@ -57,7 +58,7 @@ public class Topic {
         this.user = user;
     }
 
-    public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Long topicView, Category category, List<Hastag> hastags, User user) {
+    public Topic(Long topicId, @NotBlank @Size(max = 200) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Long topicView, Category category, List<Hastag> hastags, User user) {
         this.topicId = topicId;
         this.title = title;
         this.content = content;
