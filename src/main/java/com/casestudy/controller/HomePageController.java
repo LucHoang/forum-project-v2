@@ -79,7 +79,7 @@ public class HomePageController {
     }
 
     @GetMapping(value = {"/"})
-    public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable,  @CookieValue(value = "setUser", defaultValue = "") String setUser,
+    public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 5) Pageable pageable,  @CookieValue(value = "setUser", defaultValue = "") String setUser,
                                   HttpServletResponse response, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/views/index");
         modelAndView.addObject("categories",categories());
