@@ -92,7 +92,7 @@
                     <div class="posts__section-left">
                         <div class="posts__topic">
                             <div class="posts__content">
-                                <a th:href="@{/detail/__${topic.topicId}__}">
+                                <a th:href="@{/detail/__${topic.topicId}__/list}">
                                     <h3 th:text="${topic.title}"></h3>
                                 </a>
                                 <th:block th:each="entry : ${listHastagWithTopicId}">
@@ -116,7 +116,9 @@
                     <div class="posts__section-right">
                         <div class="posts__users">
                             <div>
-                                <a href="#" class="avatar"><img th:src="@{'/assert/img/' + ${topic.getUser().getAvatar()}}" alt="avatar"></a>
+                                <a th:href="@{/detail-user/__${topic.user.id}__}" class="avatar">
+                                    <img th:src="@{'/assert/img/' + ${topic.getUser().getAvatar()}}"  alt="avatar"></a>
+<!--                                <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/A.svg" alt="avatar"></a>-->
                             </div>
                         </div>
                         <div class="posts__replies">31</div>

@@ -96,6 +96,7 @@ public class Reply{
         this.commentId = commentId;
     }
 
+
     public User getUser() {
         return user;
     }

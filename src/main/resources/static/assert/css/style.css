@@ -3447,6 +3447,7 @@ a:link {
 a:hover {
   color: #394047;
 }
+.icon-tick:before { content: '\e82d'; } /* '' */
 [class^="icon-"] {
   color: #93969a;
   -webkit-transition: color 0.4s;
