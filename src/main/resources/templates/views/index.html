@@ -21,7 +21,7 @@
                     <nav  class="dropdown dropdown--design-01" data-dropdown-list="categories">
                         <ul  class="dropdown__catalog row">
                             <li th:each="category: ${categories}" class="col-xs-6">
-                                <a th:href="@{/get-topic-by-cate/__${category.cateId}__}" class="category">
+                                <a th:href="@{'/get-topic-by-cate'(id=${category.cateId})}" class="category">
                                     <i th:style="'background-color:'+${category.color}"></i>
                                     <span th:text="${category.getCateName()}"></span>
                                 </a>
@@ -34,8 +34,7 @@
                     <div class="dropdown dropdown--design-01" data-dropdown-list="tags">
                         <div class="tags">
                             <th:block th:each="hastag,state : ${hastags}">
-                                <a th:href="@{/get-topic-by-hastag/__${hastag.hastagId}__}" th:class="${state.index}==0 ? 'bg-ff0031':'bg-3b96ca'" th:text="${hastag.getHastagName()}"></a>
-<!--                                <a href="#" th:case="*" class="bg-3b96ca" th:text="${hastag.getHastagName()}"></a>-->
+                                <a th:href="@{'/get-topic-by-hastag'(id=${hastag.hastagId})}" th:class="${state.index}==0 ? 'bg-ff0031':'bg-3b96ca'" th:text="${hastag.getHastagName()}"></a>
                             </th:block>
                         </div>
                     </div>
@@ -65,10 +64,18 @@
             <div class="nav__thread">
                 <p>Thread Navigation:</p>
             </div>
-            <div class="nav__thread">
-                <a th:href="@{'/'(page=${topics.number - 1})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i>Previous</a>
+            <div class="nav__thread" th:switch="${valueForPagination[0]}">
+                <a th:case="'homepage'" th:href="@{'/'(page=${topics.number - 1})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i>Previous</a>
+                <a th:case="'searchpage'" th:href="@{'/search'(page=${topics.number - 1},searchTopic=${searchTopic})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i>Previous</a>
+                <a th:case="'categorypage'" th:href="@{'/get-topic-by-cate'(page=${topics.number - 1},id=${valueForPagination[1]})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i>Previous</a>
+                <a th:case="'hastagpage'" th:href="@{'/get-topic-by-hastag'(page=${topics.number - 1},id=${valueForPagination[1]})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i>Previous</a>
                 <span th:text="${topics.number + 1}"></span>/<span th:text="${topics.totalPages}"></span>&nbsp;&nbsp;&nbsp;</li>
-                <a th:href="@{'/'(page=${topics.number + 1})}" th:if="${topics.hasNext()}" class="nav__thread-btn nav__thread-btn--next">Next<i class="icon-Arrow_Right"></i></a>
+            </div>
+            <div class="nav__thread" th:switch="${valueForPagination[0]}">
+                <a th:case="'homepage'" th:href="@{'/'(page=${topics.number + 1})}" th:if="${topics.hasNext()}" class="nav__thread-btn nav__thread-btn--next">Next<i class="icon-Arrow_Right"></i></a>
+                <a th:case="'searchpage'" th:href="@{'/search'(page=${topics.number + 1},searchTopic=${searchTopic})}" th:if="${topics.hasNext()}" class="nav__thread-btn nav__thread-btn--next">Next<i class="icon-Arrow_Right"></i></a>
+                <a th:case="'categorypage'" th:href="@{'/get-topic-by-cate'(page=${topics.number + 1},id=${valueForPagination[1]})}" th:if="${topics.hasNext()}" class="nav__thread-btn nav__thread-btn--next">Next<i class="icon-Arrow_Right"></i></a>
+                <a th:case="'hastagpage'" th:href="@{'/get-topic-by-hastag'(page=${topics.number + 1},id=${valueForPagination[1]})}" th:if="${topics.hasNext()}" class="nav__thread-btn nav__thread-btn--next">Next<i class="icon-Arrow_Right"></i></a>
             </div>
         </div>
         <div class="posts">
@@ -91,7 +98,7 @@
                                 <th:block th:each="entry : ${listHastagWithTopicId}">
                                     <div class="posts__tags tags" th:if="${entry.key} == ${topic.topicId}" >
                                         <th:block th:each="valueEntry : ${entry.value}">
-                                            <a th:text="${valueEntry.getHastagName()}" th:href="@{/get-topic-by-hastag/__${valueEntry.getHastagId()}__}" class="bg-3b96ca"></a>
+                                            <a th:text="${valueEntry.getHastagName()}" th:href="@{'/get-topic-by-hastag'(id=${valueEntry.getHastagId()})}" class="bg-3b96ca"></a>
                                         </th:block>
                                     </div>
                                 </th:block>

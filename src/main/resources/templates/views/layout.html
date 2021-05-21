@@ -51,9 +51,9 @@
                     </ul>
                 </nav>
             </div>
-            <form class="header__search" th:action="@{/}" method="post">
-                <div class="header__search" style="padding-left: 0px;" >
-                    <input  name="searchTopic" type="search" placeholder="Search all forums" class="form-control">
+            <form class="header__search" th:action="@{/search}" method="get">
+                <div class="header__search" style="padding-left: 0px;">
+                    <input  name="searchTopic" type="search" placeholder="Search all forums" class="form-control" th:value="${searchTopic !=null} ? ${searchTopic} : ''">
                 </div>
                 <div class="header__search-btn" >
                     <button type="submit" style="border: none; text-align: center;text-decoration: none;font-size: 16px; padding: 10px 50px;">Search</button>

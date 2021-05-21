@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.data.domain.Pageable;
 
+import javax.jws.Oneway;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,10 @@ public class HomePageController {
     @Autowired
     private AppUserService userService;
 
+    @Autowired
+    private String valueForPagination(){
+        return new String();
+    }
 
     private String getPrincipal() {
         String userName = null;
@@ -86,6 +91,7 @@ public class HomePageController {
         modelAndView.addObject("hastags",hastags());
         modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
         modelAndView.addObject("topics", topicService.findAll(pageable));
+        modelAndView.addObject("valueForPagination",new String[]{"homepage",""});
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         if(userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());
@@ -120,8 +126,8 @@ public class HomePageController {
         return modelAndView;
     }
 
-    @GetMapping(value = {"/get-topic-by-cate/{id}"})
-    public ModelAndView getListByCategory(@PathVariable String id,@PageableDefault(sort = {"title"},size = 3, value = 3) Pageable pageable) {
+    @GetMapping(value = {"/get-topic-by-cate"})
+    public ModelAndView getListByCategory(@RequestParam String id,@PageableDefault(sort = {"title"}, value = 3) Pageable pageable) {
         ModelAndView modelAndView;
         try {
             modelAndView = new ModelAndView("/views/index");
@@ -129,6 +135,7 @@ public class HomePageController {
             modelAndView.addObject("categories",categories());
             modelAndView.addObject("hastags",hastags());
             modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
+            modelAndView.addObject("valueForPagination",new String[]{"categorypage",id});
         }catch (Exception e){  modelAndView = new ModelAndView("/views/404");}
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         if(userCurrent.isPresent()){
@@ -137,8 +144,8 @@ public class HomePageController {
         return modelAndView;
     }
 
-    @GetMapping(value = {"/get-topic-by-hastag/{id}"})
-    public ModelAndView getListByHastag(@PathVariable String id,@PageableDefault(size = 3, value = 3) Pageable pageable) {
+    @GetMapping(value = {"/get-topic-by-hastag"})
+    public ModelAndView getListByHastag(@RequestParam String id,@PageableDefault(value = 3) Pageable pageable) {
         ModelAndView modelAndView;
         try {
             modelAndView = new ModelAndView("/views/index");
@@ -146,10 +153,31 @@ public class HomePageController {
             modelAndView.addObject("categories",categories());
             modelAndView.addObject("hastags",hastags());
             modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
+            modelAndView.addObject("valueForPagination",new String[]{"hastagpage",id});
         }catch (Exception e){
             e.printStackTrace();
             modelAndView = new ModelAndView("/views/404");}
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        if(userCurrent.isPresent()){
+            modelAndView.addObject("userCurrent", userCurrent.get());
+        }
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/search"})
+    public ModelAndView searchTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable,@RequestParam String  searchTopic) {
+        ModelAndView modelAndView = new ModelAndView("/views/index");
+        modelAndView.addObject("categories",categories());
+        modelAndView.addObject("hastags",hastags());
+        modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
+        modelAndView.addObject("topics", topicService.findAll(pageable));
+        modelAndView.addObject("valueForPagination", new String[]{"searchpage",""});
+        modelAndView.addObject("searchTopic",searchTopic);
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        Iterable<Topic> topicIterable = topicService.findTopicByTitle(searchTopic,pageable);
+        if(topicIterable.iterator().hasNext()){
+            modelAndView.addObject("topics", topicIterable);
+        }
         if(userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());
         }
@@ -173,23 +201,7 @@ public class HomePageController {
         return modelAndView;
     }
 
-    @PostMapping(value = {"/"})
-    public ModelAndView searchTopic(@PageableDefault(sort = {"title"}, value = 3) Pageable pageable,@RequestParam String  searchTopic) {
-        ModelAndView modelAndView = new ModelAndView("/views/index");
-        modelAndView.addObject("categories",categories());
-        modelAndView.addObject("hastags",hastags());
-        modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
-        modelAndView.addObject("topics", topicService.findAll(pageable));
-        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
-        Iterable<Topic> topicIterable = topicService.findTopicByTitle(searchTopic,pageable);
-        if(topicIterable.iterator().hasNext()){
-            modelAndView.addObject("topics", topicIterable);
-        }
-        if(userCurrent.isPresent()){
-            modelAndView.addObject("userCurrent", userCurrent.get());
-        }
-        return modelAndView;
-    }
+
 
 }
 
