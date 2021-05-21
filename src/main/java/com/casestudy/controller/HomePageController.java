@@ -95,7 +95,6 @@ public class HomePageController {
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         if(userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());
-//        }
 
             if (userCurrent.get().getUsername() != null)
                 setUser = userCurrent.get().getUsername();

@@ -10,6 +10,86 @@
 <header th:replace="/views/layout :: header">
 
 </header>
+<script>
+    function addReply() {
+        let id = $('.replyCon').val();
+        let content = $('#replyContent').val();
+        let newReply = {
+            content: content
+        };
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            data: JSON.stringify(newReply),
+            url: `/detail/${id}`,
+            success:  function successHandler() {
+                    let id = $('.replyCon').val();
+                    console.log('vào success');
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        dataType: 'json',
+                        type: "GET",
+                        url: `http://localhost:8080/detail/${id}`,
+                        success: function (data) {
+                            console.log(data)
+                            let content = '';
+                            for (let i = 0; i < data.length; i++) {
+                                content += getReply(data[i]);
+                            }
+                            document.getElementById('replyList').innerHTML = content;
+                            console.log(content);
+                        },
+                        error: function () {
+                            alert("looi")
+                        }
+                    });
+                },
+            error: function (data) {
+                alert("looi")
+                console.log(data)
+            }
+        });
+
+
+
+        // event.preventDefault();
+    }
+
+    function getReply(reply) {
+        return `<div class = "topic">` +
+            ` <div class = "topic__head" > <div class = "topic__avatar" >` +
+            ` <a href = "#" class = "avatar" > <img src ="/assert/img/${reply.user.avatar}" alt="avatar"></a> </div> ` +
+            `<div class="topic__caption"> ` +
+            `<div class="topic__name"> ` +
+            `<a href="#">${reply.user.username}</a>` +
+            `</div>` +
+            `<div class="topic__date"> <i class="icon-Watch_Later">${reply.replyDate}</i>` +
+            ` </div></div></div><div class="topic__content"><div class="topic__text">` +
+            `<p>${reply.content}</p>` +
+            `</div><div class="topic__footer"><div class="topic__footer-likes">` +
+            `<div><a href="#"><i class="icon-Downvote"></i></a>` +
+            `<span>${reply.replyLike}</span></div><div>` +
+            `<a href="#"><i class="icon-Downvote"></i></a>` +
+            `<span>${reply.replyDislike} </span>` +
+            `</div></div><div class="topic__footer-share">` +
+            `<div data-visible="desktop">` +
+            `<a href="#"><i class="icon-Share_Topic"></i></a>` +
+            `<a href="#"><i class="icon-Flag_Topic"></i></a>` +
+            `<a href="#"><i class="icon-Bookmark"></i></a>` +
+            `</div>` +
+            `<button><i class="icon-Reply_Fill"></i></button>` +
+            `</div> </div> </div> </div> </div> </div><br>`;
+    }
+    function displayForm() {
+        document.getElementById("cont").style.display = '';
+    }
+</script>
 <!-- MAIN -->
 <main>
     <div class="container">
@@ -90,7 +170,7 @@
         </div>
         <!--        topic-->
         <th:block th:each="topic : ${topic}">
-            <div class="topics">
+            <div class="topics" style="width: 75%;margin: auto">
                 <div class="topics__heading ">
                     <h2 class="topics__heading-title" th:text="${topic.title}"></h2>
 
@@ -115,8 +195,8 @@
                                     <div class="topic__name">
                                         <a href="#" th:text="${topic.user.username}"></a>
                                     </div>
-                                    <div class="topic__date"><i class="icon-Watch_Later"
-                                                                th:text="${topic.topicDate}"></i>
+                                    <div class="topic__date"><i style="padding-bottom: 3px;" class="icon-Watch_Later"></i>
+                                        <b style="color:#1e87f0;" th:text="${topic.getSimpleDate()}"></b>
                                     </div>
                                 </div>
                             </div>
@@ -147,6 +227,63 @@
                             </div>
                         </div>
                         <!--  Popular List-->
+
+                        <!--  Reply-->
+                        <div id="replyList">
+                            <th:block th:each="reply:${replies}">
+                                <div   class="topic" th:if="${reply.getCommentId()==0}">
+                                    <div class="topic__head">
+                                        <div class="topic__avatar">
+                                            <a href="#" class="avatar"><img
+                                                    th:src="@{'/assert/img/' + ${reply.user.avatar}}"
+                                                    alt="avatar"></a>
+                                        </div>
+                                        <div class="topic__caption">
+                                            <div class="topic__name">
+                                                <a href="#" th:text="${reply.user.username}"></a>
+                                            </div>
+                                            <div class="topic__date">
+                                                <i style="padding-bottom: 10px;" class="icon-Watch_Later"></i><p th:text="${reply.getSimpleDate()}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="topic__content">
+                                        <div class="topic__text">
+                                            <p th:text="${reply.content}"></p>
+                                        </div>
+                                        <div class="topic__footer">
+                                            <div class="topic__footer-likes">
+                                                <div>
+                                                    <a href="#"><i class="icon-Upvote"></i></a>
+                                                    <span th:text="${reply.replyLike}"></span>
+                                                </div>
+                                                <div>
+                                                    <a href="#"><i class="icon-Downvote"></i></a>
+                                                    <span th:text="${reply.replyDislike}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="topic__content">
+                                        <div class="topic__footer-likes">
+                                            <div sec:authorize="isAuthenticated()">
+                                                <a id="cont" onclick="displayForm()">Add reply comment ...</a>
+                                            </div>
+                                            <div sec:authorize="isAnonymous()">
+                                                <p th:href="@{/login}">Sign in reply this comment</p>
+                                            </div>
+                                            <div class="topic__content">
+                                                <input name="reply" class="cont" type="hidden" id="" cols="100"
+                                                       rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </th:block>
+
+                        </div>
+
                         <div class="topic">
                             <div class="topic__content">
                                 <div>
@@ -155,7 +292,7 @@
                                 <div class="topic__list">
                                     <th:block>
                                         <ul th:each="t : ${topTopic}">
-                                            <li><a href="@{/detail/__${t.topicId}__/list}"><span
+                                            <li><a th:href="@{/detail/__${t.topicId}__/list}"><span
                                                     th:text="${t.title}"></span></a>
                                             </li>
                                         </ul>
@@ -163,100 +300,41 @@
                                 </div>
                             </div>
                         </div>
-                        <!--  Reply-->
-                        <div id="replyList">
-                            <th:block>
-                                <div th:each="reply:${replies}">
-                                    <div class="topic" th:if="${reply.getCommentId()==0}">
-                                        <div class="topic__head">
-                                            <div class="topic__avatar">
-                                                <a href="#" class="avatar"><img
-                                                        th:src="@{'/assert/img/' + ${reply.user.avatar}}"
-                                                        alt="avatar"></a>
-                                            </div>
-                                            <div class="topic__caption">
-                                                <div class="topic__name">
-                                                    <a href="#" th:text="${reply.user.username}"></a>
-                                                </div>
-                                                <div class="topic__date">
-                                                    <i class="icon-Watch_Later" th:text="${reply.replyDate}"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="topic__content">
-                                            <div class="topic__text">
-                                                <p th:text="${reply.content}"></p>
-                                            </div>
-                                            <div class="topic__footer">
-                                                <div class="topic__footer-likes">
-                                                    <div>
-                                                        <a href="#"><i class="icon-Upvote"></i></a>
-                                                        <span th:text="${reply.replyLike}"></span>
-                                                    </div>
-                                                    <div>
-                                                        <a href="#"><i class="icon-Downvote"></i></a>
-                                                        <span th:text="${reply.replyDislike}"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="topic topic--comment" >
-                                            <div class="topic__head">
-                                                <div class="topic__avatar">
-                                                    <a href="#" class="avatar"><img
-                                                            src="assert/fonts/icons/avatars/L.svg" alt="avatar"></a>
-                                                </div>
-                                                <div class="topic__caption">
-                                                    <div class="topic__name">
-                                                        <a href="#">Larry</a>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="topic__arrow topic__arrow--up"><i
-                                                        class="icon-Arrow_Up"></i></a>
-                                            </div>
-                                            <div class="topic__content">
-                                                <div class="topic__text">
-                                                    <p>Can you stop ADP, and create new option for author can create
-                                                        coupon code, Author
-                                                        will give for their customer. It's better than now.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="topic__content">
-                                            <div class="topic__footer-likes">
-                                            <div sec:authorize="isAuthenticated()">
-                                                <a id="cont" onclick="displayForm()">Add reply comment ...</a>
-                                            </div>
-                                            <div sec:authorize="isAnonymous()">
-                                                <a th:href="@{/login}">Sign in reply this comment</a>
-                                            </div>
-                                            <div class="topic__content">
-                                                <input name="reply" class="cont" type="hidden" id="" cols="100"
-                                                       rows="5"></textarea>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </th:block>
-                        </div>
-
                     </div>
+
                 </div>
-                <div sec:authorize="isAuthenticated()">
-                    <div><p>Write comment</p></div>
-                    <div>
-                        <textarea id="replyContent" cols="130" rows="10"></textarea>
-                        <input type="hidden" class="replyCon" th:value="${topic.topicId}">
+                <div class="create__section create__textarea" sec:authorize="isAuthenticated()">
+                    <label class="create__label" for="replyContent">Write comment</label>
+                    <div class="create__textarea-head">
+                        <span><i class="icon-Quote"></i></span>
+                        <span><i class="icon-Bold"></i></span>
+                        <span><i class="icon-Italic"></i></span>
+                        <div class="create__textarea-separate"></div>
+                        <span><i class="icon-Share_Topic"></i></span>
+                        <span><i class="icon-BlockQuote"></i></span>
+                        <span><i class="icon-Performatted"></i></span>
+                        <span><i class="icon-Upload_Files"></i></span>
+                        <span class="create__textarea-separate"></span>
+                        <span><i class="icon-Bullet_List"></i></span>
+                        <span><i class="icon-heading"></i></span>
+                        <span><i class="icon-Horizontal_Line"></i></span>
+                        <span><i class="icon-Emoticon"></i></span>
+                        <span><i class="icon-Settings"></i></span>
+                        <span><i class="icon-Color_Picker"></i></span>
+                        <div class="create__textarea-btn">
+                            <a href="#" class="btn" th:text="#{preview}">Preview</a>
+                        </div>
                     </div>
-                    <div>
-                        <input type="button" th:value="Send" onclick="addReply()">
+                    <textarea class="form-control" id="replyContent" cols="130" rows="10"></textarea>
+                    <input type="hidden" class="replyCon" th:value="${topic.topicId}">
+                    <br>
+                    <div class="create__footer">
+                        <a th:href="@{/}" class="create__btn-cansel btn" th:text="#{cancel}">Cancel</a>
+                        <input type="button" th:value="Send" onclick="addReply()" class="create__btn-create btn btn--type-02">
                     </div>
                 </div>
                 <div sec:authorize="isAnonymous()">
-                    <a th:href="@{/login}">Sign in to add comment</a>
+                    <h6><a th:href="@{/login}">Sign in to add comment</a></h6>
                 </div>
             </div>
         </th:block>
@@ -270,73 +348,4 @@
 
 </body>
 </html>
-<script>
-    function addReply() {
-        let id = $('.replyCon').val();
-        let content = $('#replyContent').val();
-        let newReply = {
-            content: content
-        };
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            type: "POST",
-            data: JSON.stringify(newReply),
-            url: `/detail/${id}`,
-            success: successHandler(id),
-            error: function (data) {
-                alert("looi")
-                console.log(data)
-            }
-        });
-        event.preventDefault();
-    }
 
-    function successHandler(id) {
-        $.ajax({
-            type: "GET",
-            url: `/detail/${id}`,
-            success: function (data) {
-                console.log(data)
-                let content = '';
-                for (let i = 0; i < data.length; i++) {
-                    content += getReply(data[i]);
-                }
-                document.getElementById('replyList').innerHTML = content;
-            }
-        });
-    }
-
-    function getReply(reply) {
-        return `<div class = "topic">` +
-            ` <div class = "topic__head" > <div class = "topic__avatar" >` +
-            ` <a href = "#" class = "avatar" > <img src ="/assert/img/${reply.user.avatar}" alt="avatar"></a> </div> ` +
-            `<div class="topic__caption"> ` +
-            `<div class="topic__name"> ` +
-            `<a href="#">${reply.user.username}</a>` +
-            `</div>` +
-            `<div class="topic__date"> <i class="icon-Watch_Later">${reply.replyDate}</i>` +
-            ` </div></div></div><div class="topic__content"><div class="topic__text">` +
-            `<p>${reply.content}</p>` +
-            `</div><div class="topic__footer"><div class="topic__footer-likes">` +
-            `<div><a href="#"><i class="icon-Downvote"></i></a>` +
-            `<span>${reply.replyLike}</span></div><div>` +
-            `<a href="#"><i class="icon-Downvote"></i></a>` +
-            `<span>${reply.replyDislike} </span>` +
-            `</div></div><div class="topic__footer-share">` +
-            `<div data-visible="desktop">` +
-            `<a href="#"><i class="icon-Share_Topic"></i></a>` +
-            `<a href="#"><i class="icon-Flag_Topic"></i></a>` +
-            `<a href="#"><i class="icon-Bookmark"></i></a>` +
-            `</div>` +
-            `<button><i class="icon-Reply_Fill"></i></button>` +
-            `</div> </div> </div> </div> </div> </div>`;
-    }
-</script>
-<script>
-    function displayForm() {
-        document.getElementById("cont").style.display = '';
-    }
-</script>

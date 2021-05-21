@@ -5,6 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Data
 @Entity
 @Table(name = "replies")
@@ -21,6 +23,8 @@ public class Reply{
     private Long replyDislike;
 
     private LocalDateTime replyDate;
+
+    private String simpleDate = getSimpleDate();
 
     private Long commentId;
 
@@ -113,5 +117,13 @@ public class Reply{
         this.topic = topic;
     }
 
-
+    public String getSimpleDate(){
+        try {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            String formatDateTime = this.replyDate.format(format);
+            return formatDateTime;
+        }catch (Exception e){
+            return null;
+        }
+    }
 }

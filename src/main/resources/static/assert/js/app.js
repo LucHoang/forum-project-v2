@@ -161,7 +161,8 @@ function Tags(element) {
     function DOMRender() {
         // clear the entire <li> inside <ul>
         DOMList.innerHTML = ""; // render each <li> to <ul>
-        if(arrayOfList[0] == ""){arrayOfList.shift();}
+        if(arrayOfList[0] == "" || arrayOfList[0] == ","){arrayOfList.shift();}
+
         arrayOfList.forEach(function (currentValue, index) {
             var li = document.createElement("li");
             li.innerHTML = "".concat(currentValue, " <a>&times;</a>");
@@ -184,6 +185,7 @@ function Tags(element) {
                     // push to array and remove ','
                     arrayOfList.push(text.replace(",", ""));
                 } // clear input
+                if(arrayOfList[0] == "," || arrayOfList[0] == "") {arrayOfList.shift();}
                 document.getElementById("data-input").value = arrayOfList;
 
                 this.value = "";

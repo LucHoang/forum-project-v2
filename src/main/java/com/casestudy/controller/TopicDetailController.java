@@ -74,8 +74,10 @@ public class TopicDetailController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<Reply>> allReply(@PathVariable Long id) {
+    public ResponseEntity<Iterable<Reply>> allReply(@PathVariable Long id,ModelAndView modelAndView) {
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         Optional<Topic> topic = topicService.findById(id);
+
         return new ResponseEntity<>(replyService.findAllByTopic(topic.get()),HttpStatus.OK);
     }
 }

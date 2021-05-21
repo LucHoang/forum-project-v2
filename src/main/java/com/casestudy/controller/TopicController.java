@@ -18,6 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.lang.Object;
+import org.apache.commons.lang3.ArrayUtils;
+
 
 @Controller
 
@@ -72,11 +75,12 @@ public class TopicController {
         ModelAndView modelAndView = new ModelAndView("/views/create-topic");
         String[] arrayHastag = inputHastag.trim().split(",");
         List<Hastag> hastagSet = new ArrayList<>();
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         System.out.println("inputHastag:" +inputHastag);
         boolean checkHastag = true,checkTopic = true;
         // Check độ dài của mỗi hastag min = 1 ,max = 8, tối đa 5 hastag
         for (int i = 0; i < arrayHastag.length; i++) {
-            if(arrayHastag[i].length() <1 || arrayHastag.length>8 || arrayHastag.length > 5){
+            if(arrayHastag[i].length() <1 || arrayHastag[i].length()>8 || arrayHastag.length > 5){
                 checkHastag = false;
                 checkTopic = false;
                 break;
@@ -85,7 +89,7 @@ public class TopicController {
         // Insert hastag mới
         for (int i = 0; i < arrayHastag.length; i++) {
             try {
-                Hastag hastag = hastagService.saveAndReturn(new Hastag(arrayHastag[1]));
+                Hastag hastag = hastagService.saveAndReturn(new Hastag(arrayHastag[i]));
                 hastagSet.add(hastag);
             }catch (Exception e){ checkHastag = false; checkTopic = false; break; }
         }
@@ -96,7 +100,6 @@ public class TopicController {
             topicService.save(topic);
         }
 
-        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
 
         modelAndView.addObject("userCurrent",userCurrent.get());
         modelAndView.addObject("topic", new Topic());

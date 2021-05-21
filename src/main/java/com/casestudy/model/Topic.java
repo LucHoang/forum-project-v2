@@ -2,6 +2,8 @@ package com.casestudy.model;
 
 
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -20,7 +22,7 @@ public class Topic {
     private Long topicId;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 200)
     private String title;
 
     @NotBlank
@@ -29,13 +31,13 @@ public class Topic {
 
     private LocalDateTime topicDate;
 
-    private Long topicLike;
+    private Long topicLike = 0l;
 
-    private Long topicDislike;
+    private Long topicDislike = 0l;
 
-    private Long topicStatus;
+    private Long topicStatus = 0l;
 
-    private Long topicView;
+    private Long topicView = 0l;
 
     @ManyToOne
     private Category category;
@@ -57,7 +59,7 @@ public class Topic {
         this.user = user;
     }
 
-    public Topic(Long topicId, @NotBlank @Size(max = 50) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Long topicView, Category category, List<Hastag> hastags, User user) {
+    public Topic(Long topicId, @NotBlank @Size(max = 200) String title, @NotBlank @Size(max = 1000) String content, LocalDateTime topicDate, Long topicLike, Long topicDislike, Long topicStatus, Long topicView, Category category, List<Hastag> hastags, User user) {
         this.topicId = topicId;
         this.title = title;
         this.content = content;
