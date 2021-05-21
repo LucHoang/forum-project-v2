@@ -36,7 +36,7 @@ public class EmailController {
             if (user.get().getEmail().equalsIgnoreCase(email.get())) {
                 // Create a Simple MailMessage.
                 SimpleMailMessage message = new SimpleMailMessage();
-//        message.setTo(MyConstants.FRIEND_EMAIL);
+                // message.setTo(MyConstants.FRIEND_EMAIL);
                 message.setTo(email.get());
                 message.setSubject("RETRIEVE YOUR PASSWORD");
                 message.setText("The password for the accoount '" + user.get().getUsername() + "': " + user.get().getPassword());

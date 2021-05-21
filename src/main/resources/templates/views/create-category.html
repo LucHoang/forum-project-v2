@@ -23,7 +23,7 @@
                     <div class="col-md-12">
                         <div class="create__section">
                             <label class="create__label" for="CategoryName">Category Name</label>
-                            <input type="text" class="form-control" id="CategoryName" placeholder="Add here" th:field="*{cateName}">
+                            <input type="text" class="form-control" id="CategoryName" placeholder="Add here" th:field="*{cateName}" required>
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                     <div class="col-md-3">
                         <div class="create__section">
                             <label class="create__label" for="CategoryColor">Select color of category</label>
-                            <input type="color" class="form-control" id="CategoryColor" placeholder="Add here" th:field="*{color}">
+                            <input type="color" class="form-control" id="CategoryColor" placeholder="Add here" th:field="*{color}" required>
                         </div>
                     </div>
                 </div>
