@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "replies")
 public class Reply{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long replyId;
 
     @Size(max = 1000)
@@ -95,6 +95,7 @@ public class Reply{
     public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
+
 
     public User getUser() {
         return user;

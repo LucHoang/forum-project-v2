@@ -40,7 +40,7 @@
                     <img src="/assert/fonts/icons/main/Logo_Forum.svg" alt="logo">
                 </h1>
                 <div class="header__logo-btn" >
-                    <a th:href="@{/home}">Unity</a><i class="icon-Arrow_Below"></i>
+                    <a th:href="@{/}">Unity</a><i class="icon-Arrow_Below"></i>
                 </div>
                 <nav class="dropdown dropdown--design-01" data-dropdown-list="logo">
                     <ul class="dropdown__catalog">
@@ -51,44 +51,14 @@
                     </ul>
                 </nav>
             </div>
-            <div class="header__search">
-                <form action="#">
-                    <label>
-                        <i class="icon-Search js-header-search-btn-open"></i>
-                        <input type="search" placeholder="Search all forums" class="form-control">
-                    </label>
-                </form>
-                <div class="header__search-close js-header-search-btn-close"><i class="icon-Cancel"></i></div>
-                <div class="header__search-btn" data-dropdown-btn="search">
-                    Topics<i class="icon-Arrow_Below"></i>
+            <form class="header__search" th:action="@{/}" method="post">
+                <div class="header__search" style="padding-left: 0px;" >
+                    <input  name="searchTopic" type="search" placeholder="Search all forums" class="form-control">
                 </div>
-                <div class="dropdown dropdown--design-01" data-dropdown-list="search">
-                    <ul>
-                        <li>
-                            <label>
-                                <label class="custom-checkbox">
-                                    <input type="checkbox" checked="checked">
-                                    <i></i>
-                                </label>Search Titles Only
-                            </label>
-
-                        </li>
-                        <li>
-                            <label>
-                                <label class="custom-checkbox">
-                                    <input type="checkbox">
-                                    <i></i>
-                                </label>Show Results as Posts
-                            </label>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="icon-Advanced_Search"></i>Advanced Search
-                            </a>
-                        </li>
-                    </ul>
+                <div class="header__search-btn" >
+                    <button type="submit" style="border: none; text-align: center;text-decoration: none;font-size: 16px; padding: 10px 50px;">Search</button>
                 </div>
-            </div>
+            </form>
             <div class="header__menu">
                 <div class="header__menu-btn" data-dropdown-btn="menu">
                     Latest Topics<i class="icon-Menu_Icon"></i>
@@ -187,7 +157,7 @@
                 </div>
             </div>
 
-            <div class="header__user" sec:authorize="isAuthenticated()">
+            <div class="header__user" sec:authorize="isAuthenticated()" >
                 <div class="header__user-btn" data-dropdown-btn="user">
                     <img th:src="@{'/assert/img/' + ${userCurrent.avatar}}" alt="avatar">
                         <span th:text="${userCurrent.username}"></span>
@@ -217,8 +187,8 @@
                 </nav>
             </div>
         </div>
-        <div class="header__offset-btn">
-            <a href="create-topic.html"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
+        <div class="header__offset-btn" sec:authorize="isAuthenticated()">
+            <a th:href="@{/create-topic}"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
         </div>
     </div>
 </header>
@@ -269,7 +239,7 @@
                 </div>
                 <div class="footer__bline">
                     <ul class="footer__menu">
-                        <li class="footer__copyright"><span>&copy; 2017 azyrusthemes.com</span></li>
+                        <li class="footer__copyright"><span>&copy; 2021 Team 4 - C1220G1</span></li>
                         <li><a href="#">Teams</a></li>
                         <li><a href="#">Privacy</a></li>
                         <li><a href="#">Send Feedback</a></li>

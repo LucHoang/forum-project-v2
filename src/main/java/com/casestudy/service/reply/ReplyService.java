@@ -32,6 +32,7 @@ public class ReplyService implements IReplyService {
         return replyRepository.save(reply);
     }
 
+
     @Override
     public void remove(Long id) {
         replyRepository.deleteById(id);
@@ -40,5 +41,15 @@ public class ReplyService implements IReplyService {
     @Override
     public Iterable<Reply> findAllByTopic(Topic topic) {
         return replyRepository.findAllByTopic(topic);
+    }
+
+    @Override
+    public int countReplyByTopic(Topic topic) {
+        return replyRepository.countReplyByTopic(topic);
+    }
+
+    @Override
+    public Iterable<Reply> findAllByCommentId(Long id) {
+        return replyRepository.findAllByCommentId(id);
     }
 }

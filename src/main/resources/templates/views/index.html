@@ -11,6 +11,7 @@
 </header>
 
 <!-- MAIN -->
+<!--<a href="/login">LOGIN</a>-->
 <main>
     <div class="container">
         <div class="nav">
@@ -20,7 +21,7 @@
                     <nav  class="dropdown dropdown--design-01" data-dropdown-list="categories">
                         <ul  class="dropdown__catalog row">
                             <li th:each="category: ${categories}" class="col-xs-6">
-                                <a href="#" class="category">
+                                <a th:href="@{/get-topic-by-cate/__${category.cateId}__}" class="category">
                                     <i th:style="'background-color:'+${category.color}"></i>
                                     <span th:text="${category.getCateName()}"></span>
                                 </a>
@@ -33,7 +34,7 @@
                     <div class="dropdown dropdown--design-01" data-dropdown-list="tags">
                         <div class="tags">
                             <th:block th:each="hastag,state : ${hastags}">
-                                <a href="#" th:class="${state.index}==0 ? 'bg-ff0031':'bg-3b96ca'" th:text="${hastag.getHastagName()}"></a>
+                                <a th:href="@{/get-topic-by-hastag/__${hastag.hastagId}__}" th:class="${state.index}==0 ? 'bg-ff0031':'bg-3b96ca'" th:text="${hastag.getHastagName()}"></a>
 <!--                                <a href="#" th:case="*" class="bg-3b96ca" th:text="${hastag.getHastagName()}"></a>-->
                             </th:block>
                         </div>
@@ -84,9 +85,17 @@
                     <div class="posts__section-left">
                         <div class="posts__topic">
                             <div class="posts__content">
-                                <a th:href="@{/detail/__${topic.topicId}__}">
+                                <a th:href="@{/detail/__${topic.topicId}__/list}">
                                     <h3 th:text="${topic.title}"></h3>
                                 </a>
+                                <th:block th:each="entry : ${listHastagWithTopicId}">
+                                    <div class="posts__tags tags" th:if="${entry.key} == ${topic.topicId}" >
+                                        <th:block th:each="valueEntry : ${entry.value}">
+                                            <a th:text="${valueEntry.getHastagName()}" th:href="@{/get-topic-by-hastag/__${valueEntry.getHastagId()}__}" class="bg-3b96ca"></a>
+                                        </th:block>
+                                    </div>
+                                </th:block>
+
                             </div>
                         </div>
                         <div class="posts__category">
@@ -94,12 +103,13 @@
                                 <i th:style="'background-color:'+${topic.getCategory().getColor()} + ';'"></i>
                                 <p th:text="${topic.getCategory().getCateName()}" ></p>
                             </a>
+
                         </div>
                     </div>
                     <div class="posts__section-right">
                         <div class="posts__users">
                             <div>
-                                <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/A.svg" alt="avatar"></a>
+                                <a href="#" class="avatar"><img th:src="@{'/assert/img/' + ${topic.getUser().getAvatar()}}" alt="avatar"></a>
                             </div>
                         </div>
                         <div class="posts__replies">31</div>

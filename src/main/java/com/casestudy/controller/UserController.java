@@ -105,7 +105,7 @@ public class UserController {
     }
 
     @GetMapping("/list-user")
-    public ModelAndView listUser(@RequestParam("text") Optional<String> search, @PageableDefault(value = 20) Pageable pageable) {
+    public ModelAndView listUser(@RequestParam("text") Optional<String> search, @PageableDefault(value = 10) Pageable pageable) {
 //        Page<city> users = cityService.findAll(pageable);
 //        Iterable<city> users = citieservice.findAll();
         Page<User> users;
@@ -129,11 +129,11 @@ public class UserController {
                     case "ROLE_MOD":
                         isMod = true;
                         break;
-                    case "ROLE_MEMBER":
-                        isMember = true;
-                        break;
                     case "ROLE_SUS":
                         isSus = true;
+                        break;
+                    case "ROLE_MEMBER":
+                        isMember = true;
                         break;
                 }
             }
@@ -141,10 +141,10 @@ public class UserController {
                 listUser.put(user.getId(), "ADMIN");
             } else if (isMod) {
                 listUser.put(user.getId(), "MOD");
-            } else if (isMember){
-                listUser.put(user.getId(), "MEMBER");
             } else if (isSus){
                 listUser.put(user.getId(), "SUS");
+            } else if (isMember){
+                listUser.put(user.getId(), "MEMBER");
             }
         }
 
@@ -157,14 +157,25 @@ public class UserController {
 
     @GetMapping("/edit-user/{id}")
     public ModelAndView showEditForm(@PathVariable Long id) {
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        if (!userCurrent.get().getId().equals(id)) {
+            for (Role role: userCurrent.get().getRoles()) {
+                if (role.getName().equals("ROLE_ADMIN")) {
+                    break;
+                }
+                ModelAndView modelAndView = new ModelAndView("/views/access-Denied");
+                return modelAndView;
+            }
+        }
+
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             String userRole = user.get().getRoles().toString();
             for (Role role: user.get().getRoles()) {
-                if (role.getName().equals("ROLE_SUS")) {
-                    userRole = "ROLE_SUS";
-                    break;
-                }
+//                if (role.getName().equals("ROLE_SUS")) {
+//                    userRole = "ROLE_SUS";
+//                    break;
+//                }
                 userRole = role.getName();
             }
 
@@ -238,7 +249,7 @@ public class UserController {
                 userRole.add(new Role(2L, "ROLE_MEMBER"));
             } else {
                 userRole.add(new Role(5L, "ROLE_SUS"));
-                userRole.add(new Role(2L, "ROLE_MEMBER"));
+//                userRole.add(new Role(2L, "ROLE_MEMBER"));
             }
 
             roles.addAll(userRole);
@@ -249,6 +260,7 @@ public class UserController {
         userService.save(user);
         ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
         modelAndView.addObject("userRole", roleText.get());
         modelAndView.addObject("success", "User updated successfully");
         return modelAndView;

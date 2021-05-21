@@ -16,4 +16,6 @@ public interface IReplyService  {
 
     void remove(Long id);
     Iterable<Reply> findAllByTopic(Topic topic);
+    int countReplyByTopic(Topic topic);
+    Iterable<Reply> findAllByCommentId(Long id);
 }

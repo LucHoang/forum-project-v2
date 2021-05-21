@@ -14,25 +14,8 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-    <!-- STYLESHEET -->
-    <!-- fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
-
-    <!-- icon -->
-    <link rel="stylesheet" href="/assert/fonts/icons/main/mainfont/style.css">
-    <link rel="stylesheet" href="/assert/fonts/icons/font-awesome/css/font-awesome.min.css">
-
-    <!-- Vendor -->
-    <link rel="stylesheet" href="/assert/vendor/bootstrap/v3/bootstrap.min.css">
-    <link rel="stylesheet" href="/assert/vendor/bootstrap/v4/bootstrap-grid.css">
-    <!-- Custom -->
-    <link rel="stylesheet" href="/assert/css/style.css">
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+    <th:block th:replace="/views/layout :: head">
+    </th:block>
 
 <style>
 body {
@@ -204,7 +187,6 @@ $(document).ready(function(){
 <body>
 <!-- HEADER -->
 <header th:replace="/views/layout :: header">
-
 </header>
 
 <div class="container-xl">
@@ -263,7 +245,7 @@ $(document).ready(function(){
 <!--                            <span th:text="${row.username}"></span>-->
                         </td>
                         <td th:text="${row.fullName}"></td>
-                        <td th:text="${row.dateCreate}"></td>
+                        <td th:text="${row.simpleDate}"></td>
                         <td th:text="${listUser.get(row.id)}"></td>
                         <td th:text="${row.level}"></td>
 <!--                        <td><span class="status text-success">&bull;</span> Active</td>-->
@@ -296,6 +278,9 @@ $(document).ready(function(){
             </div>
         </div>
     </div>
-</div>     
+</div>
+<!-- FOOTER -->
+<footer th:replace="/views/layout :: footer">
+</footer>
 </body>
 </html>
