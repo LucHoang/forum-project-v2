@@ -9,9 +9,7 @@ import com.casestudy.service.hastag.HastagService;
 import com.casestudy.service.topic.TopicService;
 import com.casestudy.service.user.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.data.domain.Pageable;
 
 import javax.jws.Oneway;
 import javax.servlet.http.Cookie;
@@ -84,7 +81,7 @@ public class HomePageController {
     }
 
     @GetMapping(value = {"/"})
-    public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 5) Pageable pageable,  @CookieValue(value = "setUser", defaultValue = "") String setUser,
+    public ModelAndView listTopic(@PageableDefault(sort = {"topicDate"}, direction = Sort.Direction.DESC, value = 5) Pageable pageable, @CookieValue(value = "setUser", defaultValue = "") String setUser,
                                   HttpServletResponse response, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/views/index");
         modelAndView.addObject("categories",categories());
