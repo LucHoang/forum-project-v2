@@ -254,8 +254,9 @@
                                 </div>
                                 <div class="topic__footer">
                                     <div class="topic__footer-likes">
-                                        <div>
-                                            <a ><i id="likeTopic" style="cursor:pointer;color: #5c6166;" class="icon-Upvote"></i></a>
+                                        <div th:switch="${StatusLike}">
+                                            <a th:case="'like'" ><i id="likeTopic" style="cursor:pointer;color: pink;" class="icon-Upvote"></i></a>
+                                            <a th:case="*" ><i id="likeTopic" style="cursor:pointer;color: #5c6166;" class="icon-Upvote"></i></a>
                                             <span id="spanTopic" th:text="${topic.topicLike}"></span>
                                         </div>
                                         <div>

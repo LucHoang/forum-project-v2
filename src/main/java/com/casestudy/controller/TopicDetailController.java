@@ -2,9 +2,11 @@ package com.casestudy.controller;
 
 import com.casestudy.model.Reply;
 import com.casestudy.model.Topic;
+import com.casestudy.model.TopicUserLikeStatus;
 import com.casestudy.model.User;
 import com.casestudy.service.reply.IReplyService;
 import com.casestudy.service.topic.ITopicService;
+import com.casestudy.service.topicUserLike.TopicUserLikeServie;
 import com.casestudy.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,8 @@ public class TopicDetailController {
     private IReplyService replyService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private TopicUserLikeServie topicUserLikeService;
 
     private String getPrincipal() {
         String userName = null;
@@ -55,6 +59,12 @@ public class TopicDetailController {
         modelAndView.addObject("replyCount",a);
         if (userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());
+            try {
+                modelAndView.addObject("StatusLike",topicUserLikeService.findByTopicIdAndUserId(id,userCurrent.get().getId()).get().getStatus());
+            }catch (Exception e){
+                modelAndView.addObject("StatusLike","null");
+                System.out.println("Loi nay");
+            }
         }
         return modelAndView;
     }
@@ -84,6 +94,13 @@ public class TopicDetailController {
     public ResponseEntity<Optional<Topic>> haddleLikeTopic(@PathVariable Long id,@PathVariable String statusLike) {
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         Optional<Topic> topic = topicService.findById(id);
+        if(userCurrent.isPresent()){
+            if(statusLike.equals("like")){
+                topicUserLikeService.save(new TopicUserLikeStatus(topic.get().getTopicId(),userCurrent.get().getId(),"like"));
+            }else{
+                topicUserLikeService.save(new TopicUserLikeStatus(topic.get().getTopicId(),userCurrent.get().getId(),"unlike"));
+            }
+        }
         try {
             if(statusLike.equals("like")){
                 topic.get().setTopicLike(topic.get().getTopicLike() + 1l);
