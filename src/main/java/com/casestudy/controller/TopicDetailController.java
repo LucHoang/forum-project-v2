@@ -74,10 +74,40 @@ public class TopicDetailController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<Reply>> allReply(@PathVariable Long id,ModelAndView modelAndView) {
+    public ResponseEntity<Iterable<Reply>> allReply(@PathVariable Long id) {
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         Optional<Topic> topic = topicService.findById(id);
 
         return new ResponseEntity<>(replyService.findAllByTopic(topic.get()),HttpStatus.OK);
+    }
+    @GetMapping("/haddleLikeTopic/{statusLike}")
+    public ResponseEntity<Optional<Topic>> haddleLikeTopic(@PathVariable Long id,@PathVariable String statusLike) {
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        Optional<Topic> topic = topicService.findById(id);
+        try {
+            if(statusLike.equals("like")){
+                topic.get().setTopicLike(topic.get().getTopicLike() + 1l);
+                topicService.save(topic.get());
+            }else{
+                topic.get().setTopicLike(topic.get().getTopicLike() - 1l);
+                topicService.save(topic.get());
+            }
+        }catch (Exception e){}
+        return new ResponseEntity<>(topicService.findById(id),HttpStatus.OK);
+    }
+    @GetMapping("/haddleLikeReply/{statusLike}/{replyId}")
+    public ResponseEntity<Optional<Reply>> haddleLikeReply(@PathVariable String statusLike,@PathVariable Long replyId) {
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+        Optional<Reply> reply = replyService.findById(replyId);
+        try {
+            if(statusLike.equals("like")){
+                reply.get().setReplyLike(reply.get().getReplyLike() + 1l);
+                replyService.save(reply.get());
+            }else{
+                reply.get().setReplyLike(reply.get().getReplyLike() - 1l);
+                replyService.save(reply.get());
+            }
+        }catch (Exception e){}
+        return new ResponseEntity<>(replyService.findById(replyId),HttpStatus.OK);
     }
 }

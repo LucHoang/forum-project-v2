@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="/views/layout :: head">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 </head>
 <body>
@@ -10,7 +9,55 @@
 <header th:replace="/views/layout :: header">
 
 </header>
-<script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script language="JavaScript" type="text/javascript">
+    $(document).click(function(event) {
+        let id = $('.classTopic').val();
+        console.log(id);
+        let y = $(event.target.className);
+        if($(event.target.className).selector == 'icon-Upvote' || $(event.target.className).selector == "icon-Upvote likeReply")
+        {
+            console.log("vào rồi");
+            let statusLike = "";
+            if($(event.target).context.style.color == 'rgb(92, 97, 102)'){
+                $(event.target).context.style.color = 'pink';
+                statusLike = "like";
+            }else{
+                $(event.target).context.style.color = 'rgb(92, 97, 102)';
+                statusLike = "unlike";
+            }
+            if($(event.target.id).selector == "likeTopic"){
+                $.ajax({
+                    type: "GET",
+                    url: `/detail/${id}/haddleLikeTopic/${statusLike}`,
+                    success:function (data){
+                        document.getElementById("spanTopic").innerHTML = data.topicLike;
+                    },
+                    error: function (data) {
+                        alert("looi")
+                        console.log(data)
+                    }
+                });
+            }else if($(event.target.className).selector == "icon-Upvote likeReply"){
+                let replyId = $(event.target.querySelector('input')).context.value;
+                $.ajax({
+                    type: "GET",
+                    url: `/detail/${id}/haddleLikeReply/${statusLike}/${replyId}`,
+                    success:function (data){
+                        $(event.target).context.parentNode.parentNode.querySelector('span').innerText = data.replyLike;
+                    },
+                    error: function (data) {
+                        alert("looi like reply");
+                        console.log(data)
+                    }
+                });
+            }
+
+        }else{
+            console.log("aa");
+        }
+    });
+
     function addReply() {
         let id = $('.replyCon').val();
         let content = $('#replyContent').val();
@@ -69,13 +116,13 @@
             `<div class="topic__name"> ` +
             `<a href="#">${reply.user.username}</a>` +
             `</div>` +
-            `<div class="topic__date"> <i class="icon-Watch_Later">${reply.replyDate}</i>` +
+            `<div class="topic__date"> <i class="icon-Watch_Later"></i>${reply.simpleDate}` +
             ` </div></div></div><div class="topic__content"><div class="topic__text">` +
             `<p>${reply.content}</p>` +
             `</div><div class="topic__footer"><div class="topic__footer-likes">` +
-            `<div><a href="#"><i class="icon-Downvote"></i></a>` +
+            `<div><a><i style="cursor:pointer;color: #5c6166;" class="icon-Upvote likeReply"><input type="hidden" value="${reply.replyId}"></i></a>` +
             `<span>${reply.replyLike}</span></div><div>` +
-            `<a href="#"><i class="icon-Downvote"></i></a>` +
+            `<a><i class="icon-Downvote"></i></a>` +
             `<span>${reply.replyDislike} </span>` +
             `</div></div><div class="topic__footer-share">` +
             `<div data-visible="desktop">` +
@@ -170,6 +217,7 @@
         </div>
         <!--        topic-->
         <th:block th:each="topic : ${topic}">
+            <input type="hidden" class="classTopic" th:value="${topic.topicId}">
             <div class="topics" style="width: 75%;margin: auto">
                 <div class="topics__heading ">
                     <h2 class="topics__heading-title" th:text="${topic.title}"></h2>
@@ -207,8 +255,8 @@
                                 <div class="topic__footer">
                                     <div class="topic__footer-likes">
                                         <div>
-                                            <a href="#"><i class="icon-Upvote"></i></a>
-                                            <span th:text="${topic.topicLike}"></span>
+                                            <a ><i id="likeTopic" style="cursor:pointer;color: #5c6166;" class="icon-Upvote"></i></a>
+                                            <span id="spanTopic" th:text="${topic.topicLike}"></span>
                                         </div>
                                         <div>
                                             <a href="#"><i class="icon-Downvote"></i></a>
@@ -231,7 +279,7 @@
                         <!--  Reply-->
                         <div id="replyList">
                             <th:block th:each="reply:${replies}">
-                                <div   class="topic" th:if="${reply.getCommentId()==0}">
+                                <div  class="topic" th:if="${reply.getCommentId()==0}">
                                     <div class="topic__head">
                                         <div class="topic__avatar">
                                             <a href="#" class="avatar"><img
@@ -254,11 +302,13 @@
                                         <div class="topic__footer">
                                             <div class="topic__footer-likes">
                                                 <div>
-                                                    <a href="#"><i class="icon-Upvote"></i></a>
+                                                    <a><i style="cursor:pointer;color: #5c6166;" class="icon-Upvote likeReply">
+                                                        <input type="hidden" th:value="${reply.replyId}">
+                                                    </i></a>
                                                     <span th:text="${reply.replyLike}"></span>
                                                 </div>
                                                 <div>
-                                                    <a href="#"><i class="icon-Downvote"></i></a>
+                                                    <a><i class="icon-Downvote"></i></a>
                                                     <span th:text="${reply.replyDislike}"></span>
                                                 </div>
                                             </div>
