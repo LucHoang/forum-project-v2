@@ -182,7 +182,7 @@
                             <li><a th:href="@{/edit-user/{id}(id=${userCurrent.id})}" th:text="#{account_setting}">Account setting</a></li>
 <!--                            <li><a href="#" th:text="#{my_groups}">My Groups</a></li>-->
                             <li><a href="#" th:text="#{notifications}">Notifications</a></li>
-                            <li><a href="#" th:text="#{topics}">Topics</a></li>
+                            <li><a th:href="@{/detail-user/__${userCurrent.id}__}" th:text="#{topics}">Topics</a></li>
                             <li><a href="#" th:text="#{likes}">Likes</a></li>
                             <li><a th:href="@{/logout}" th:text="#{logout}">Logout</a></li>
                         </ul>
