@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/home","/edit-user/**").access("hasRole('MEMBER') or hasRole('ADMIN') or hasRole('MOD') or hasRole('SUS')")
-                .antMatchers("/create-topic/**","edit-topic/**").access("hasRole('MEMBER') or hasRole('ADMIN') or hasRole('MOD')")
+                .antMatchers("/create-topic/**","/edit-topic/**").access("hasRole('MEMBER') or hasRole('ADMIN') or hasRole('MOD')")
                 .antMatchers("/delete-topic-post/**","/categories/**","/view-create-cate/**"
                 ,"/create-or-update-cate/**","/edit-cate/**","/delete-cate/**").access("hasRole('ADMIN') or hasRole('MOD')")
                 .antMatchers("/admin/**", "/list-user/**", "/delete-user/**").access("hasRole('ADMIN')")

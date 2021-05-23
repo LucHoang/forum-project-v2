@@ -114,14 +114,49 @@ public class DetailsController {
 
     @PostMapping("/edit-topic")
     public ModelAndView editTopic(@Validated @ModelAttribute("topic") Topic topic, @RequestParam String inputHastag, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView("/views/edit-topic");
+//        ModelAndView modelAndView = new ModelAndView("/views/edit-topic");
+//        String[] arrayHastag = inputHastag.trim().split(",");
+//        List<Hastag> hastagList = new ArrayList<>();
+//        System.out.println("inputHastag:" +inputHastag);
+//        boolean checkHastag = true,checkTopic = true;
+//        // Check độ dài của mỗi hastag min = 1 ,max = 8, tối đa 5 hastag
+//        for (int i = 0; i < arrayHastag.length; i++) {
+//            if(arrayHastag[i].length() <1 || arrayHastag.length>8 || arrayHastag.length > 5){
+//                checkHastag = false;
+//                checkTopic = false;
+//                break;
+//            }
+//        }
+//        // Insert hastag mới
+//        for (int i = 0; i < arrayHastag.length; i++) {
+//            try {
+//                Hastag hastag = hastagService.saveAndReturn(new Hastag(arrayHastag[1]));
+//                hastagList.add(hastag);
+//            }catch (Exception e){ checkHastag = false; checkTopic = false; break; }
+//        }
+//        // Insert topic mới
+//        if(checkTopic){
+//            topic.setHastags(hastagList);
+//            topic.setTopicDate(LocalDateTime.now());
+//            topicService.save(topic);
+//        }
+//
+//        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+//        modelAndView.addObject("userCurrent",userCurrent.get());
+//        modelAndView.addObject("topic", new Topic());
+//        modelAndView.addObject("checkTopic", checkTopic);
+//        modelAndView.addObject("checkHastag", checkHastag);
+//        return modelAndView;
+
+        ModelAndView modelAndView = new ModelAndView("/views/create-topic");
         String[] arrayHastag = inputHastag.trim().split(",");
-        List<Hastag> hastagList = new ArrayList<>();
+        List<Hastag> hastagSet = new ArrayList<>();
+        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         System.out.println("inputHastag:" +inputHastag);
         boolean checkHastag = true,checkTopic = true;
         // Check độ dài của mỗi hastag min = 1 ,max = 8, tối đa 5 hastag
         for (int i = 0; i < arrayHastag.length; i++) {
-            if(arrayHastag[i].length() <1 || arrayHastag.length>8 || arrayHastag.length > 5){
+            if(arrayHastag[i].length() <1 || arrayHastag[i].length()>8 || arrayHastag.length > 5){
                 checkHastag = false;
                 checkTopic = false;
                 break;
@@ -130,18 +165,19 @@ public class DetailsController {
         // Insert hastag mới
         for (int i = 0; i < arrayHastag.length; i++) {
             try {
-                Hastag hastag = hastagService.saveAndReturn(new Hastag(arrayHastag[1]));
-                hastagList.add(hastag);
+                Hastag hastag = hastagService.saveAndReturn(new Hastag(arrayHastag[i]));
+                hastagSet.add(hastag);
             }catch (Exception e){ checkHastag = false; checkTopic = false; break; }
         }
         // Insert topic mới
         if(checkTopic){
-            topic.setHastags(hastagList);
+            topic.setHastags(hastagSet);
             topic.setTopicDate(LocalDateTime.now());
+            topic.setUser(userCurrent.get());
             topicService.save(topic);
         }
 
-        Optional<User> userCurrent = userService.findByUsername(getPrincipal());
+
         modelAndView.addObject("userCurrent",userCurrent.get());
         modelAndView.addObject("topic", new Topic());
         modelAndView.addObject("checkTopic", checkTopic);
