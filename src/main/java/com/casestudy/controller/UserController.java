@@ -193,19 +193,7 @@ public class UserController {
     @PostMapping("/edit-user")
     public ModelAndView updateCity(@Validated @ModelAttribute("user") UserForm userRequest, BindingResult bindingResult,
                                    @RequestParam("role") Optional<String> roleText, @RequestParam("confirmPassword") Optional<String> confirmPassword) {
-        if (bindingResult.hasFieldErrors()) {
-            return new ModelAndView("/front-dashboard/edit-user");
-        }
-
         Optional<User> userTemp = userService.findById(userRequest.getId());
-
-        if (userService.existsByUsername(userRequest.getUsername())) {
-            if (!userRequest.getUsername().equals(userTemp.get().getUsername())) {
-                ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
-                modelAndView.addObject("error", "Username exist!!!");
-                return modelAndView;
-            }
-        }
 
         MultipartFile multipartFile = userRequest.getAvatar();
         String fileName = multipartFile.getOriginalFilename();
@@ -221,11 +209,32 @@ public class UserController {
             }
         }
 
+        if (bindingResult.hasFieldErrors()) {
+            ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
+            modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
+            modelAndView.addObject("userAvatar", fileName);
+            modelAndView.addObject("userRole", roleText.get());
+            return modelAndView;
+        }
+
+        if (userService.existsByUsername(userRequest.getUsername())) {
+            if (!userRequest.getUsername().equals(userTemp.get().getUsername())) {
+                ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
+                modelAndView.addObject("error", "Username exist!!!");
+                modelAndView.addObject("userAvatar", fileName);
+                modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
+                modelAndView.addObject("userRole", roleText.get());
+                return modelAndView;
+            }
+        }
+
         if (confirmPassword.isPresent()) {
             if (!confirmPassword.get().equals(userRequest.getPassword())) {
                 ModelAndView modelAndView = new ModelAndView("/front-dashboard/edit-user");
+                modelAndView.addObject("userCurrent", userService.findByUsername(getPrincipal()).get());
                 modelAndView.addObject("error", "Confirmation password is not correct!!!");
                 modelAndView.addObject("userAvatar", fileName);
+                modelAndView.addObject("userRole", roleText.get());
                 return modelAndView;
             }
         }

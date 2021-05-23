@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html lang="en-US">
 <head th:replace="/views/layout :: head">
 
@@ -69,7 +70,7 @@
                 <a th:case="'searchpage'" th:href="@{'/search'(page=${topics.number - 1},searchTopic=${searchTopic})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i><span th:text="#{previous}">Previous</span></a>
                 <a th:case="'categorypage'" th:href="@{'/get-topic-by-cate'(page=${topics.number - 1},id=${valueForPagination[1]})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i><span th:text="#{previous}">Previous</span></a>
                 <a th:case="'hastagpage'" th:href="@{'/get-topic-by-hastag'(page=${topics.number - 1},id=${valueForPagination[1]})}" th:if="${topics.hasPrevious()}" class="nav__thread-btn nav__thread-btn--prev"><i class="icon-Arrow_Left"></i><span th:text="#{previous}">Previous</span></a>
-                <span th:text="${topics.number + 1}"></span>/<span th:text="${topics.totalPages}"></span>&nbsp;&nbsp;&nbsp;</li>
+                <span th:text="${topics.number + 1}"></span>/<span th:text="${topics.totalPages}"></span>
             </div>
             <div class="nav__thread" th:switch="${valueForPagination[0]}">
                 <a th:case="'homepage'" th:href="@{'/'(page=${topics.number + 1})}" th:if="${topics.hasNext()}" class="nav__thread-btn nav__thread-btn--next"><span th:text="#{next}">Next</span><i class="icon-Arrow_Right"></i></a>
@@ -86,6 +87,7 @@
                 <div class="posts__replies" th:text="#{replies}">Replies</div>
                 <div class="posts__views" th:text="#{views}">Views</div>
                 <div class="posts__activity" th:text="#{date}">Date</div>
+<!--                <div class="posts__activity" th:text="#{action}">Action</div>-->
             </div>
             <div class="posts__body">
                 <div th:each="topic :${topics}" class="posts__item bg-f2f4f6">
@@ -103,6 +105,30 @@
                                     </div>
                                 </th:block>
 
+                                <div sec:authorize="hasRole('ADMIN')">
+                                                <span>
+                                                   <a th:href="@{/edit-topic/__${topic.topicId}__}">
+                                                       <img src="/assert/fonts/icons/avatars/icons8-edit.svg"
+                                                            alt="edit" width="20" height="20">
+                                                   </a>
+                                                    <a th:href="@{/delete-topic-post/__${topic.topicId}__}">
+                                                        <img src="/assert/fonts/icons/avatars/icons8-remove.svg"
+                                                             alt="remove" width="20" height="20">
+                                                    </a>
+                                                </span>
+                                </div>
+                                <div sec:authorize="hasRole('MOD')">
+                                                <span>
+                                                   <a th:href="@{/edit-topic/__${topic.topicId}__}">
+                                                       <img src="/assert/fonts/icons/avatars/icons8-edit.svg"
+                                                            alt="edit" width="20" height="20">
+                                                   </a>
+                                                    <a th:href="@{/delete-topic-post/__${topic.topicId}__}">
+                                                        <img src="/assert/fonts/icons/avatars/icons8-remove.svg"
+                                                             alt="remove" width="20" height="20">
+                                                    </a>
+                                                </span>
+                                </div>
                             </div>
                         </div>
                         <div class="posts__category">
@@ -121,7 +147,9 @@
 <!--                                <a href="#" class="avatar"><img src="assert/fonts/icons/avatars/A.svg" alt="avatar"></a>-->
                             </div>
                         </div>
-                        <div class="posts__replies">31</div>
+                        <th:block th:each="entry : ${countReplyByTopicId}">
+                            <div class="posts__replies" th:if="${entry.key} == ${topic.topicId}" th:text="${entry.value}"></div>
+                        </th:block>
                         <div class="posts__views" th:text="${topic.topicView}"></div>
                         <div class="posts__activity" th:text="${topic.getSimpleDate()}"></div>
                     </div>

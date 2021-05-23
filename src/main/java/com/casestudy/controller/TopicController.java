@@ -97,6 +97,7 @@ public class TopicController {
         if(checkTopic){
             topic.setHastags(hastagSet);
             topic.setTopicDate(LocalDateTime.now());
+            topic.setUser(userCurrent.get());
             topicService.save(topic);
         }
 

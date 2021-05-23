@@ -18,9 +18,9 @@ public class Reply{
     @Size(max = 1000)
     private String content;
 
-    private Long replyLike;
+    private Long replyLike =0l;
 
-    private Long replyDislike;
+    private Long replyDislike =0l;
 
     private LocalDateTime replyDate;
 

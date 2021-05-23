@@ -6,12 +6,11 @@ import com.casestudy.model.Topic;
 import com.casestudy.model.User;
 import com.casestudy.service.category.CategoryService;
 import com.casestudy.service.hastag.HastagService;
+import com.casestudy.service.reply.ReplyService;
 import com.casestudy.service.topic.TopicService;
 import com.casestudy.service.user.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.data.domain.Pageable;
 
 import javax.jws.Oneway;
 import javax.servlet.http.Cookie;
@@ -44,9 +42,7 @@ public class HomePageController {
     private AppUserService userService;
 
     @Autowired
-    private String valueForPagination(){
-        return new String();
-    }
+    private ReplyService replyService;
 
     private String getPrincipal() {
         String userName = null;
@@ -82,9 +78,21 @@ public class HomePageController {
         }
         return  listHastagWithTopicId;
     }
+    @ModelAttribute
+    private Map<Long,Long> countReplyByTopicId(){
+        Map<Long,Long> mapTopicIdAmountRepy = new HashMap<>();
+        for (Topic topic : topicService.findAll()){
+            if(replyService.countReplyByTopicId(topic.getTopicId()).isPresent()){
+                mapTopicIdAmountRepy.put(topic.getTopicId(),replyService.countReplyByTopicId(topic.getTopicId()).get());
+            }else{
+                mapTopicIdAmountRepy.put(topic.getTopicId(),0l);
+            }
+        }
+        return mapTopicIdAmountRepy;
+    }
 
     @GetMapping(value = {"/"})
-    public ModelAndView listTopic(@PageableDefault(sort = {"title"}, value = 5) Pageable pageable,  @CookieValue(value = "setUser", defaultValue = "") String setUser,
+    public ModelAndView listTopic(@PageableDefault(sort = {"topicDate"}, direction = Sort.Direction.DESC, value = 5) Pageable pageable, @CookieValue(value = "setUser", defaultValue = "") String setUser,
                                   HttpServletResponse response, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("/views/index");
         modelAndView.addObject("categories",categories());
@@ -92,6 +100,7 @@ public class HomePageController {
         modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
         modelAndView.addObject("topics", topicService.findAll(pageable));
         modelAndView.addObject("valueForPagination",new String[]{"homepage",""});
+        modelAndView.addObject("countReplyByTopicId",countReplyByTopicId());
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         if(userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());
@@ -135,6 +144,7 @@ public class HomePageController {
             modelAndView.addObject("hastags",hastags());
             modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
             modelAndView.addObject("valueForPagination",new String[]{"categorypage",id});
+            modelAndView.addObject("countReplyByTopicId",countReplyByTopicId());
         }catch (Exception e){  modelAndView = new ModelAndView("/views/404");}
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         if(userCurrent.isPresent()){
@@ -153,6 +163,7 @@ public class HomePageController {
             modelAndView.addObject("hastags",hastags());
             modelAndView.addObject("listHastagWithTopicId", listHastagWithTopicId());
             modelAndView.addObject("valueForPagination",new String[]{"hastagpage",id});
+            modelAndView.addObject("countReplyByTopicId",countReplyByTopicId());
         }catch (Exception e){
             e.printStackTrace();
             modelAndView = new ModelAndView("/views/404");}
@@ -172,6 +183,7 @@ public class HomePageController {
         modelAndView.addObject("topics", topicService.findTopicByTitle(searchTopic,pageable));
         modelAndView.addObject("valueForPagination", new String[]{"searchpage",""});
         modelAndView.addObject("searchTopic",searchTopic);
+        modelAndView.addObject("countReplyByTopicId",countReplyByTopicId());
         Optional<User> userCurrent = userService.findByUsername(getPrincipal());
         if(userCurrent.isPresent()){
             modelAndView.addObject("userCurrent", userCurrent.get());

@@ -1,8 +1,11 @@
 package com.casestudy.service.category;
 
 import com.casestudy.model.Category;
+import com.casestudy.model.User;
 import com.casestudy.repository.ICategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,5 +35,18 @@ public class CategoryService implements ICategoryService {
         categoryRepository.deleteById(id);
     }
 
+    @Override
+    public Page<Category> findAllByCateNameContaining(String name, Pageable pageable) {
+        return categoryRepository.findAllByCateNameContaining(name, pageable);
+    }
+    @Override
+    public Page<Category> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
+    }
+
+    @Override
+    public Boolean existsByCateName(String name) {
+        return categoryRepository.existsByCateName(name);
+    }
     
 }

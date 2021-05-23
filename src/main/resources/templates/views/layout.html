@@ -176,9 +176,11 @@
                     </div>
                     <div>
                         <ul class="dropdown__catalog">
-                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/list-user}" th:text="#{dashboard}">Dashboard</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/list-user}" th:text="#{user_Dashboard}">User Dashboard</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/categories}" th:text="#{category_Dashboard}">Category Dashboard</a></li>
+                            <li sec:authorize="hasRole('MOD')"><a th:href="@{/categories}" th:text="#{category_Dashboard}">Category Dashboard</a></li>
                             <li><a th:href="@{/edit-user/{id}(id=${userCurrent.id})}" th:text="#{account_setting}">Account setting</a></li>
-                            <li><a href="#" th:text="#{my_groups}">My Groups</a></li>
+<!--                            <li><a href="#" th:text="#{my_groups}">My Groups</a></li>-->
                             <li><a href="#" th:text="#{notifications}">Notifications</a></li>
                             <li><a href="#" th:text="#{topics}">Topics</a></li>
                             <li><a href="#" th:text="#{likes}">Likes</a></li>
@@ -188,7 +190,13 @@
                 </nav>
             </div>
         </div>
-        <div class="header__offset-btn" sec:authorize="isAuthenticated()">
+        <div class="header__offset-btn" sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/create-topic}"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
+        </div>
+        <div class="header__offset-btn" sec:authorize="hasRole('MOD')">
+            <a th:href="@{/create-topic}"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
+        </div>
+        <div class="header__offset-btn" sec:authorize="hasRole('MEMBER')">
             <a th:href="@{/create-topic}"><img src="/assert/fonts/icons/main/New_Topic.svg" alt="New Topic"></a>
         </div>
     </div>

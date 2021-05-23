@@ -18,4 +18,6 @@ public interface IReplyService  {
     Iterable<Reply> findAllByTopic(Topic topic);
     int countReplyByTopic(Topic topic);
     Iterable<Reply> findAllByCommentId(Long id);
+
+    Optional<Long> countReplyByTopicId(Long topicId);
 }

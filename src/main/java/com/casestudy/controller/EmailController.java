@@ -33,20 +33,22 @@ public class EmailController {
     public ModelAndView sendSimpleEmail(@RequestParam("email") Optional<String> email, @RequestParam("username") Optional<String> username) {
         if (username.isPresent() && email.isPresent()) {
             Optional<User> user = userService.findByUsername(username.get());
-            if (user.get().getEmail().equalsIgnoreCase(email.get())) {
-                // Create a Simple MailMessage.
-                SimpleMailMessage message = new SimpleMailMessage();
-                // message.setTo(MyConstants.FRIEND_EMAIL);
-                message.setTo(email.get());
-                message.setSubject("RETRIEVE YOUR PASSWORD");
-                message.setText("The password for the accoount '" + user.get().getUsername() + "': " + user.get().getPassword());
+            if (user.isPresent()) {
+                if (user.get().getEmail().equalsIgnoreCase(email.get())) {
+                    // Create a Simple MailMessage.
+                    SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(MyConstants.FRIEND_EMAIL);
+                    message.setTo(email.get());
+                    message.setSubject("RETRIEVE YOUR PASSWORD");
+                    message.setText("The password for the accoount '" + user.get().getUsername() + "': " + user.get().getPassword());
 
-                // Send Message!
-                this.emailSender.send(message);
+                    // Send Message!
+                    this.emailSender.send(message);
 
-                ModelAndView modelAndView = new ModelAndView("/views/forgot-password");
-                modelAndView.addObject("success", "Please check your email to receive your password.");
-                return modelAndView;
+                    ModelAndView modelAndView = new ModelAndView("/views/forgot-password");
+                    modelAndView.addObject("success", "Please check your email to receive your password.");
+                    return modelAndView;
+                }
             }
         }
 

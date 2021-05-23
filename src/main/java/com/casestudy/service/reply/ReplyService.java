@@ -52,4 +52,9 @@ public class ReplyService implements IReplyService {
     public Iterable<Reply> findAllByCommentId(Long id) {
         return replyRepository.findAllByCommentId(id);
     }
+
+    @Override
+    public Optional<Long> countReplyByTopicId(Long topicId) {
+        return replyRepository.countReplyByTopicId(topicId);
+    }
 }
